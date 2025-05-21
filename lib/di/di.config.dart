@@ -31,11 +31,19 @@ import '../ui/screens/Auth/domain/usecase/register_consultant_usecase.dart'
 import '../ui/screens/Auth/domain/usecase/register_fresh_usecase.dart'
     as _i1055;
 import '../ui/screens/Auth/domain/usecase/reset_pass_usecase.dart' as _i735;
+import '../ui/screens/Auth/domain/usecase/verifycode_usecase.dart' as _i658;
 import '../ui/screens/Auth/presentation/login/VM/login_vm.dart' as _i637;
 import '../ui/screens/Auth/presentation/paswword/forgetpassword/forgetpassword_vm.dart'
     as _i113;
+import '../ui/screens/Auth/presentation/paswword/resetpassword/resetpassword_vm.dart'
+    as _i971;
+import '../ui/screens/Auth/presentation/paswword/verifycode/verifycode_vm.dart'
+    as _i991;
+import '../ui/screens/consultant_flow/consul_profile/consul_profile_vm.dart'
+    as _i894;
 import '../ui/screens/consultant_flow/register/VM/consultant_register_vm.dart'
     as _i812;
+import '../ui/screens/gradueted_flow/profile/profile_vm.dart' as _i447;
 import '../ui/screens/gradueted_flow/register/VM/fresh_register_vm.dart'
     as _i205;
 import 'modules/network_modul.dart' as _i680;
@@ -59,6 +67,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i226.AuthOnlineDS>(
       () => _i457.AuthOnlineDSImpl(gh<_i766.ApiServices>()),
     );
+    gh.factory<_i447.ProfileCubit>(
+      () => _i447.ProfileCubit(gh<_i226.AuthOnlineDS>()),
+    );
+    gh.factory<_i894.ConsultantProfileCubit>(
+      () => _i894.ConsultantProfileCubit(gh<_i226.AuthOnlineDS>()),
+    );
     gh.factory<_i285.AuthRepository>(
       () => _i942.AuthRepositoryImpl(
         gh<_i226.AuthOnlineDS>(),
@@ -76,6 +90,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i113.ForgetPasswordCubit>(
       () => _i113.ForgetPasswordCubit(gh<_i285.AuthRepository>()),
+    );
+    gh.factory<_i971.ResetPasswordCubit>(
+      () => _i971.ResetPasswordCubit(gh<_i285.AuthRepository>()),
+    );
+    gh.factory<_i991.VerifyOtpCubit>(
+      () => _i991.VerifyOtpCubit(gh<_i285.AuthRepository>()),
+    );
+    gh.factory<_i658.VerifyOtpUseCase>(
+      () => _i658.VerifyOtpUseCase(gh<_i285.AuthRepository>()),
     );
     gh.factory<_i568.RegisterConsultantUseCase>(
       () => _i568.RegisterConsultantUseCase(gh<_i285.AuthRepository>()),

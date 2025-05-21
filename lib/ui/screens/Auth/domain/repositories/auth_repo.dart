@@ -1,22 +1,22 @@
 import 'dart:io';
-import '../../data/model/request/pass_request.dart';
-import '../../data/model/response/login_response.dart';
-import '../../data/model/response/pass_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/auth_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/user.dart';
+import '../../data/model/response/general_response.dart';
 import '../api_result.dart';
 
 abstract class AuthRepository {
-  Future<Result<LoginResponse>> login(String email, String password);
+  Future<Result<AuthResponse>> login(String email, String password);
 
-  Future<Result<GenericResponseModel>> freshRegister(
-      String fullName,
-      String email,
-      String password,
-      String yearOfGraduation,
-      String university,
-      String department,
-      );
+  Future<Result<AuthResponse>> freshRegister(
+    String fullName,
+    String email,
+    String password,
+    String yearOfGraduation,
+    String university,
+    String department,
+  );
 
-  Future<Result<GenericResponseModel>> consultantRegister(
+  Future<Result<AuthResponse>> consultantRegister(
     String fullName,
     String email,
     String password,
@@ -31,8 +31,12 @@ abstract class AuthRepository {
 
   Future<Result<GenericResponseModel>> resetPassword(
     String email,
-    String token,
+    String otp,
     String newPassword,
     String confirmPassword,
   );
+
+  Future<Result<GenericResponseModel>> verifyOtp(String email, String otp);
+
+  Future<Result<UserModel?>> fetchUserProfile();
 }

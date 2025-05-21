@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/auth_response.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/domain/api_result.dart';
-import '../../data/model/response/login_response.dart';
 import '../repositories/auth_repo.dart';
 
 @injectable
@@ -9,8 +9,7 @@ class LoginUseCase {
 
   LoginUseCase(this.authRepository);
 
-  Future<Result<LoginResponse>> call(
-      String email, String password) async {
+  Future<Result<AuthResponse>> call(String email, String password) async {
     return await authRepository.login(email, password);
   }
 }

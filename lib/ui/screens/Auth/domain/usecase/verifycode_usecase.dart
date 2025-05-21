@@ -4,12 +4,12 @@ import 'package:skillbridge_dentistry/ui/screens/Auth/domain/api_result.dart';
 import '../repositories/auth_repo.dart';
 
 @injectable
-class ForgetPasswordUseCase {
+class VerifyOtpUseCase {
   final AuthRepository authRepository;
 
-  ForgetPasswordUseCase(this.authRepository);
+  VerifyOtpUseCase(this.authRepository);
 
-  Future<Result<GenericResponseModel>> call(String email) async {
-    return await authRepository.forgetPassword(email);
+  Future<Result<GenericResponseModel>> call(String email, String otp) async {
+    return await authRepository.verifyOtp(email, otp);
   }
 }

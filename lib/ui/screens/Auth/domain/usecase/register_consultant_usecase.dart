@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:injectable/injectable.dart';
-import '../../data/model/response/pass_response.dart';
+import '../../data/model/response/auth_response.dart';
 import '../api_result.dart';
 import '../repositories/auth_repo.dart';
 
@@ -10,7 +10,7 @@ class RegisterConsultantUseCase {
 
   RegisterConsultantUseCase(this.repository);
 
-  Future<Result<GenericResponseModel>> call(
+  Future<Result<AuthResponse>> call(
     String fullName,
     String email,
     String password,

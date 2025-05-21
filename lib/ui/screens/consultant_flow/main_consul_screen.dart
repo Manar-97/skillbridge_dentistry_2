@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import '../../utils/appcolors.dart';
 import 'consul_camera/consul_camera.dart';
 import 'consul_home/consul_home.dart';
-import 'consul_profile/consultant_profile.dart';
+import 'consul_profile/consul_profile.dart';
 
 class MainConsultantScreen extends StatefulWidget {
-  const MainConsultantScreen({super.key});
+  const MainConsultantScreen({
+    super.key,
+    required this.fullName,
+  });
+  final String fullName;
   static const String routeName = 'mainconsul';
 
   @override
@@ -15,39 +19,12 @@ class MainConsultantScreen extends StatefulWidget {
 class _MainConsultantScreenState extends State<MainConsultantScreen> {
   int _selectedIndex = 0;
 
-  String? fullName;
-  String? email;
-  String? photoPath;
-
-  bool isDataLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!isDataLoaded) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-
-      if (args != null && args is Map) {
-        final Map<String, dynamic> data = Map<String, dynamic>.from(args);
-        fullName = data['fullName'];
-        email = data['email'];
-        photoPath = data['photoPath'];
-        isDataLoaded = true;
-        setState(() {});
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> tabs = [
-      ConsultantHome(fullName: fullName ?? ''),
+      ConsultantHome(fullName: widget.fullName),
       const ConsultantCases(),
-      ConsultantProfileScreen(
-        fullName: fullName ?? '',
-        email: email ?? '',
-        photoPath: photoPath ?? '',
-      ),
+      ConsultantProfileScreen(),
     ];
 
     return Scaffold(

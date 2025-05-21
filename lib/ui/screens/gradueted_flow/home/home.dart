@@ -8,7 +8,8 @@ import '../camera/case_description/case_description.dart';
 import '../notification/notification.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({super.key, required this.fullName});
+  final String fullName;
   static const String routeName = 'home';
   @override
   State<Home> createState() => _HomeState();
@@ -17,35 +18,35 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Hello, Manar',
-          style: GoogleFonts.getFont('Inter',
-              fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: IconButton(
-              icon: const Icon(
-                Icons.notifications_none,
-                size: 28,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, Notifications.routeName);
-              },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Hello, ${widget.fullName}',
+            style: GoogleFonts.getFont(
+              'Inter',
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          ),
+          actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SingleChildScrollView(
+              child: IconButton(
+                icon: const Icon(Icons.notifications_none, size: 28),
+                onPressed: () {
+                  Navigator.pushNamed(context, Notifications.routeName);
+                },
+              ),
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -59,8 +60,11 @@ class _HomeState extends State<Home> {
                     ),
                     Text(
                       'Upload your case',
-                      style: GoogleFonts.getFont('Inter',
-                          fontSize: 22, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -71,8 +75,11 @@ class _HomeState extends State<Home> {
                     ),
                     Text(
                       'Recommended for you',
-                      style: GoogleFonts.getFont('Inter',
-                          fontSize: 22, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -81,8 +88,8 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -153,13 +160,19 @@ class _HomeState extends State<Home> {
           children: [
             Text(
               'Need Expert Advice?',
-              style: GoogleFonts.getFont('Roboto',
-                  fontSize: 20, color: const Color(0xFF13122B)),
+              style: GoogleFonts.getFont(
+                'Roboto',
+                fontSize: 20,
+                color: const Color(0xFF13122B),
+              ),
             ),
             Text(
               'Access top consultants instantly for\nsecond opinions or case reviews',
-              style: GoogleFonts.getFont('Roboto',
-                  fontSize: 16, color: const Color(0xFF13122B)),
+              style: GoogleFonts.getFont(
+                'Roboto',
+                fontSize: 16,
+                color: const Color(0xFF13122B),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -169,7 +182,7 @@ class _HomeState extends State<Home> {
                   child: AppButton(text: 'Consult Now', onTap: () {}),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

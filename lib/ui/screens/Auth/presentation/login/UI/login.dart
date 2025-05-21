@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/login/VM/login_cubit_state.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/mains_dentist_creen.dart';
 import 'package:skillbridge_dentistry/ui/utils/widgets/appButton.dart';
 import '../../../../../utils/widgets/app_field.dart';
 import '../../../../consultant_flow/main_consul_screen.dart';
@@ -44,10 +44,32 @@ class _LoginState extends State<Login> {
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushReplacementNamed(
-              context,
-              MainConsultantScreen.routeName,arguments: {}
-            );
+            print('Role from backend: ${state.loginResponse.user.role}');
+            final role = state.loginResponse.user.role ?? '';
+            final fullName = state.loginResponse.user.fullName ?? '';
+            final email = state.loginResponse.user.email ?? '';
+            print('Role: $role | Name: $fullName | Email: $email');
+            print('Role from backend: ${state.loginResponse.user.role}');
+            if (role == 'Consultant') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MainConsultantScreen(fullName: fullName),
+                ),
+              );
+            } else if (role == 'FreshGraduate') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MainDentistScreen(fullName: fullName),
+                ),
+              );
+            } else {
+              // ممكن تضيفي هنا صفحة افتراضية أو رسالة خطأ
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Role not recognized')));
+            }
           } else if (state is AuthFailure) {
             showDialog(
               context: context,

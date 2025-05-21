@@ -4,8 +4,10 @@ import 'package:skillbridge_dentistry/ui/screens/Auth/data/api/api_services.dart
 import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/login_request.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/pass_request.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/register_request.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/login_response.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/pass_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/verifyOTP_request.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/general_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/user.dart';
+import '../../model/response/auth_response.dart';
 import 'auth_ds.dart';
 
 @Injectable(as: AuthOnlineDS)
@@ -19,12 +21,12 @@ class AuthOnlineDSImpl implements AuthOnlineDS {
   }
 
   @override
-  Future<LoginResponse> login(String email, String password) async {
+  Future<AuthResponse> login(String email, String password) async {
     return _apiServices.login(LoginRequest(email: email, password: password));
   }
 
   @override
-  Future<GenericResponseModel> registerConsultant(
+  Future<AuthResponse> registerConsultant(
     String fullName,
     String email,
     String password,
@@ -48,7 +50,7 @@ class AuthOnlineDSImpl implements AuthOnlineDS {
   }
 
   @override
-  Future<GenericResponseModel> registerFreshGraduate(
+  Future<AuthResponse> registerFreshGraduate(
     String fullName,
     String email,
     String password,
@@ -70,15 +72,27 @@ class AuthOnlineDSImpl implements AuthOnlineDS {
   @override
   Future<GenericResponseModel> resetPassword(
     String email,
-    String token,
+    String otp,
     String newPassword,
     String confirmPassword,
   ) async {
     final request = ResetPasswordRequest(
-        email: email,
-        token: token,
-        newPassword: newPassword,
-        confirmPassword: confirmPassword);
+      email: email,
+      otp: otp,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
+    );
     return await _apiServices.resetPassword(request);
+  }
+
+  @override
+  Future<GenericResponseModel> verifyOtp(String email, String otp) async {
+    final request = VerifyOtpRequest(email: email, otp: otp);
+    return await _apiServices.verifyOtp(request);
+  }
+
+  @override
+  Future<UserModel?> fetchUserProfile() async {
+    return await _apiServices.fetchUserProfile();
   }
 }

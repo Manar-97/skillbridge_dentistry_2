@@ -5,7 +5,7 @@ import 'package:skillbridge_dentistry/ui/utils/appcolors.dart';
 class AppButton extends StatelessWidget {
   const AppButton({super.key, required this.text, required this.onTap});
   final String text;
-  final Function() onTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

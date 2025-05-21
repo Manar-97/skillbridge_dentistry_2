@@ -1,22 +1,30 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skillbridge_dentistry/ui/base/failures/failures.dart';
+import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/pass_request.dart';
-
+import '../../../data/model/response/general_response.dart';
+import '../../../domain/api_result.dart';
 import '../../../domain/repositories/auth_repo.dart';
 
+@injectable
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   final AuthRepository authRepository;
 
   ResetPasswordCubit(this.authRepository) : super(ResetPasswordInitial());
 
-  void resetPassword(ResetPasswordRequest request) async {
+  Future<void> resetPassword(ResetPasswordRequest request) async {
     emit(BaseLoadingState());
-    // final result = await authRepository.resetPassword(request);
-    //
-    //   result.fold(
-    //     (failure) => emit(BaseErrorState(failures: failure)),
-    //     (response) => emit(BaseSuccessState(response)),
-    //   );
+    final Result<GenericResponseModel> result = await authRepository
+        .resetPassword(
+          request.email!,
+          request.otp!,
+          request.newPassword!,
+          request.confirmPassword!,
+        );
+    result is Success<GenericResponseModel>
+        ? emit(BaseSuccessState(result.data!))
+        : emit(
+          BaseErrorState((result as ServerFailure).message ?? "Unknown error"),
+        );
   }
 }
 
@@ -27,13 +35,13 @@ class ResetPasswordInitial extends ResetPasswordState {}
 class BaseLoadingState extends ResetPasswordState {}
 
 class BaseSuccessState extends ResetPasswordState {
-  final dynamic response;
+  final GenericResponseModel response;
 
   BaseSuccessState(this.response);
 }
 
 class BaseErrorState extends ResetPasswordState {
-  final failures;
+  final String message;
 
-  BaseErrorState({required this.failures});
+  BaseErrorState(this.message);
 }

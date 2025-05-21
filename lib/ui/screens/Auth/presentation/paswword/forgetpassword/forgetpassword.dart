@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_dentistry/ui/utils/widgets/appButton.dart';
-import '../../../../../../di/di.dart';
 import '../../../../../utils/dialog_utils.dart';
 import '../../../../../utils/widgets/app_field.dart';
 import '../../../data/model/request/pass_request.dart';
@@ -23,11 +22,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   void _sendOPT() {
     if (formKey.currentState!.validate()) {
-      final request = ForgetPasswordRequest(email: email.text.trim());
-      context.read<ForgetPasswordCubit>().forgetPassword(
-        request,
-      ); // Pass the request object to the cubit
-      Navigator.pushReplacementNamed(context, VerifyCode.routeName);
+      final emailText = email.text.trim();
+      print('================Email entered is: $emailText');
+      print(
+        '================Type of email is: ${emailText.runtimeType}',
+      );
+      final request = ForgetPasswordRequest(email: emailText);
+      context.read<ForgetPasswordCubit>().forgetPassword(request);
     } else {
       ScaffoldMessenger.of(
         context,
@@ -37,7 +38,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   void dispose() {
-    email.dispose();
+    email.dispose(); // علشان تمنع تسريب الذاكرة
     super.dispose();
   }
 
@@ -46,17 +47,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       body: BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
         listener: (context, state) {
-          if (state is BaseLoadingState) {
+          if (state is ForgetLoadingState) {
             showLoading(context);
-          } else if (state is BaseSuccessState) {
+          } else if (state is ForgetSuccessState) {
             hideLoading(context);
+            print("Navigating to VerifyCode with email: ${email.text.trim()}");
+            if (!mounted) return;
+            print("Navigating to VerifyCode with email: ${email.text.trim()}");
             Navigator.pushNamed(
               context,
               VerifyCode.routeName,
-              arguments: email.text.trim(),
+              arguments: email.text.trim(), // بتمرر هنا الإيميل
             );
-          } else if (state is BaseErrorState) {
+          } else if (state is ForgetErrorState) {
             hideLoading(context);
+            if (!mounted) return; // ✅ هنا كمان
             showDialog(
               context: context,
               builder:
@@ -102,12 +107,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       controller: email,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                    state is BaseLoadingState
-                        ? const Center(child: CircularProgressIndicator())
-                        : AppButton(
-                          text: 'Send OTP',
-                          onTap: () => _sendOPT(),
-                        ),
+                    AppButton(text: 'Send OTP', onTap: () => _sendOPT()),
                   ],
                 ),
               ),

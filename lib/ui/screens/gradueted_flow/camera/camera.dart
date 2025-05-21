@@ -39,7 +39,7 @@ class _CameraCasesState extends State<CameraCases> {
                 child: const Column(
                   children: [
                     Image(
-                      image: AssetImage('assets/camera.png'),
+                      image: AssetImage('assets/images/camera.png'),
                       height: 200,
                     ),
                     Text(
@@ -67,7 +67,7 @@ class _CameraCasesState extends State<CameraCases> {
                 child: const Column(
                   children: [
                     Image(
-                      image: AssetImage('assets/gallary.png'),
+                      image: AssetImage('assets/images/gallary.png'),
                       height: 200,
                     ),
                     Text(

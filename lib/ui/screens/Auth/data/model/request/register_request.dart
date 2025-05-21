@@ -1,32 +1,47 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 class ConsultantRegisterRequest {
-  String? fullName;
-  String? email;
-  String? password;
-  File? resumePath;
-  String? yearOfExperience;
-  String? department;
-  String? biography;
-  File? photoPath;
+  final String fullName;
+  final String email;
+  final String password;
+  final File resumePath;
+  final String yearOfExperience;
+  final String department;
+  final String biography;
+  final File photoPath;
 
   ConsultantRegisterRequest({
-    this.fullName,
-    this.email,
-    this.password,
-    this.resumePath,
-    this.yearOfExperience,
-    this.department,
-    this.biography,
-    this.photoPath,
+    required this.fullName,
+    required this.email,
+    required this.password,
+    required this.resumePath,
+    required this.yearOfExperience,
+    required this.department,
+    required this.biography,
+    required this.photoPath,
   });
+
+  Future<FormData> toFormData() async {
+    return FormData.fromMap({
+      'FullName': fullName,
+      'Email': email,
+      'Password': password,
+      'ResumeLink': await MultipartFile.fromFile(resumePath.path),
+      'YearOfExperience': yearOfExperience,
+      'Department': department,
+      'ShortBiography': biography,
+      'Photo': await MultipartFile.fromFile(photoPath.path),
+    });
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'fullName': fullName,
       'email': email,
       'password': password,
-      'yearOfExperience': yearOfExperience.toString(),
+      'yearOfExperience': yearOfExperience,
       'department': department,
       'shortBiography': biography,
     };
@@ -34,28 +49,28 @@ class ConsultantRegisterRequest {
 }
 
 class FreshGraduateRegisterRequest {
-  String? fullName;
-  String? email;
-  String? password;
-  String? yearOfGraduation;
-  String? university;
-  String? department;
+  final String fullName;
+  final String email;
+  final String password;
+  final String yearOfGraduation;
+  final String university;
+  final String department;
 
   FreshGraduateRegisterRequest({
-    this.fullName,
-    this.email,
-    this.password,
-    this.yearOfGraduation,
-    this.university,
-    this.department,
+    required this.fullName,
+    required this.email,
+    required this.password,
+    required this.yearOfGraduation,
+    required this.university,
+    required this.department,
   });
 
   Map<String, dynamic> toJson() => {
-        'fullName': fullName,
-        'email': email,
-        'password': password,
-        'yearOfGraduation': yearOfGraduation,
-        'university': university,
-        'department': department,
-      };
+    'fullName': fullName,
+    'email': email,
+    'password': password,
+    'yearOfGraduation': yearOfGraduation,
+    'university': university,
+    'department': department,
+  };
 }

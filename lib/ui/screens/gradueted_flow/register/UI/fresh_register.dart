@@ -29,19 +29,18 @@ class _FreshGraduatedRegisterState extends State<FreshGraduatedRegister> {
         university != null &&
         department != null) {
       context.read<RegisterFreshGraduatedCubit>().registerFreshGraduated(
-            fullName.text,
-            email.text,
-            password.text,
-            yearOfGraduation.text,
-            university!,
-            department!,
-          );
+        fullName.text,
+        email.text,
+        password.text,
+        yearOfGraduation.text,
+        university!,
+        department!,
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill all required fields.")),
       );
     }
-    // Navigator.pushReplacementNamed(context, MainDentistScreen.routeName);
   }
 
   @override
@@ -57,97 +56,101 @@ class _FreshGraduatedRegisterState extends State<FreshGraduatedRegister> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<RegisterFreshGraduatedCubit,
-          RegisterFreshGraduatedCubitState>(
+      body: BlocConsumer<
+        RegisterFreshGraduatedCubit,
+        RegisterFreshGraduatedCubitState
+      >(
         listener: (context, state) {
           if (state is AuthSuccess) {
             Navigator.pushReplacementNamed(
-                context, MainDentistScreen.routeName);
+              context,
+              MainDentistScreen.routeName,
+              arguments: {'fullName': fullName.text, 'email': email.text},
+            );
           } else if (state is AuthFailure) {
             showDialog(
               context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Error'),
-                content: Text(state.message),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
+              builder:
+                  (context) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(state.message),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('OK'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
             );
           }
         },
-        builder: (context, state) => Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
-              ),
-              Text(
-                'Register',
-                style: GoogleFonts.getFont('Inter',
-                    color: const Color(0xFF5D9F99),
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.005,
-              ),
-              Text(
-                'Create your new account',
-                style: GoogleFonts.getFont('Inter',
-                    color: const Color(0xFF898989),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              _buildInputFields(),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              state is AuthLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : AppButton(
-                      text: 'Sign Up',
-                      onTap: () => _submit(context),
-                    ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        builder:
+            (context, state) => Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Text(
-                    'Already have an account?',
-                    style: GoogleFonts.getFont('Inter',
-                        fontSize: 12, fontWeight: FontWeight.w400),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, Login.routeName);
-                    },
-                    child: Text(
-                      ' Sign in',
-                      style: GoogleFonts.getFont('Inter',
-                          color: const Color(0xFF5D9F99),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
+                    'Register',
+                    style: GoogleFonts.getFont(
+                      'Inter',
+                      color: const Color(0xFF5D9F99),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.005),
+                  Text(
+                    'Create your new account',
+                    style: GoogleFonts.getFont(
+                      'Inter',
+                      color: const Color(0xFF898989),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  _buildInputFields(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  state is AuthLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : AppButton(
+                        text: 'Sign Up',
+                        onTap: () => _submit(context),
+                      ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already have an account?',
+                        style: GoogleFonts.getFont(
+                          'Inter',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, Login.routeName);
+                        },
+                        child: Text(
+                          ' Sign in',
+                          style: GoogleFonts.getFont(
+                            'Inter',
+                            color: const Color(0xFF5D9F99),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 ],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
@@ -164,109 +167,126 @@ class _FreshGraduatedRegisterState extends State<FreshGraduatedRegister> {
               AppTextField(
                 hintText: 'enter your name',
                 text: 'Full Name',
-                validator: (value) =>
-                    value == null ? "Please select a department" : null,
+                validator:
+                    (value) =>
+                        value == null ? "Please select a department" : null,
                 controller: fullName,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.015,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               AppTextField(
                 hintText: 'enter your email',
                 text: 'E-mail',
-                validator: (value) =>
-                    value == null ? "Please select a department" : null,
+                validator:
+                    (value) =>
+                        value == null ? "Please select a department" : null,
                 controller: email,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               AppTextField(
                 hintText: 'enter your password',
                 text: 'Password',
-                validator: (value) =>
-                    value == null ? "Please select a department" : null,
+                validator:
+                    (value) =>
+                        value == null ? "Please select a department" : null,
                 controller: password,
                 obscureText: true,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               AppTextField(
                 hintText: 'enter your answer',
                 text: 'Years of Graduation',
-                validator: (value) =>
-                    value == null ? "Please select a department" : null,
+                validator:
+                    (value) =>
+                        value == null ? "Please select a department" : null,
                 controller: yearOfGraduation,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.015,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(
                   'University',
-                  style: GoogleFonts.getFont('Inter',
-                      color: Colors.grey[700], fontSize: 14),
+                  style: GoogleFonts.getFont(
+                    'Inter',
+                    color: Colors.grey[700],
+                    fontSize: 14,
+                  ),
                 ),
               ),
               DropdownButtonFormField<String>(
-                style: const TextStyle(color: Colors.black54)
-                    .copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.black54,
+                ).copyWith(fontSize: 14, fontWeight: FontWeight.bold),
                 value: university,
-                items: ['MUST', 'O6U', 'Elahram', 'Other']
-                    .map((university) => DropdownMenuItem(
-                        value: university, child: Text(university)))
-                    .toList(),
+                items:
+                    ['MUST', 'O6U', 'Elahram', 'Other']
+                        .map(
+                          (university) => DropdownMenuItem(
+                            value: university,
+                            child: Text(university),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (value) => setState(() => university = value!),
-                validator: (value) =>
-                    value == null ? 'Please select a university' : null,
+                validator:
+                    (value) =>
+                        value == null ? 'Please select a university' : null,
                 decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'Select your University',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    hintStyle: const TextStyle(color: Colors.grey)
-                        .copyWith(fontSize: 14)),
+                  filled: true,
+                  hintText: 'Select your University',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                  ).copyWith(fontSize: 14),
+                ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.015,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text('Department/Specialization',
-                    style: GoogleFonts.inter(
-                        fontSize: 14, color: Colors.grey[700])),
+                child: Text(
+                  'Department/Specialization',
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                  ),
+                ),
               ),
               DropdownButtonFormField<String>(
-                style: const TextStyle(color: Colors.black54)
-                    .copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  color: Colors.black54,
+                ).copyWith(fontSize: 14, fontWeight: FontWeight.bold),
                 value: department,
-                items: [
-                  'Periodontics',
-                  'Orthodontics',
-                  'Pathology Dentistry',
-                  'Oral Surgery',
-                  'Operative Dentistry',
-                  'Other'
-                ]
-                    .map(
-                        (dep) => DropdownMenuItem(value: dep, child: Text(dep)))
-                    .toList(),
+                items:
+                    [
+                          'Periodontics',
+                          'Orthodontics',
+                          'Pathology Dentistry',
+                          'Oral Surgery',
+                          'Operative Dentistry',
+                          'Other',
+                        ]
+                        .map(
+                          (dep) =>
+                              DropdownMenuItem(value: dep, child: Text(dep)),
+                        )
+                        .toList(),
                 onChanged: (value) => setState(() => department = value!),
-                validator: (value) =>
-                    value == null ? 'Please select a department' : null,
+                validator:
+                    (value) =>
+                        value == null ? 'Please select a department' : null,
                 decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'Select your department',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    hintStyle: const TextStyle(color: Colors.grey)
-                        .copyWith(fontSize: 14)),
+                  filled: true,
+                  hintText: 'Select your department',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                  ).copyWith(fontSize: 14),
+                ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.015,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.015),
             ],
           ),
         ),

@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/profile/profile_vm.dart';
 import 'package:skillbridge_dentistry/ui/utils/appcolors.dart';
 import '../../../utils/core/shared_pref_hepler.dart';
 import '../../Auth/presentation/login/UI/login.dart';
+import 'consul_profile_vm.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ConsultantProfileScreen extends StatefulWidget {
+  const ConsultantProfileScreen({super.key});
   static const String routeName = 'profile';
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ConsultantProfileScreen> createState() =>
+      _ConsultantProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ConsultantProfileScreenState extends State<ConsultantProfileScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileCubit>().fetchUserData();
+    context.read<ConsultantProfileCubit>().fetchUserData();
   }
 
   @override
@@ -38,20 +39,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: BlocBuilder<ProfileCubit, ProfileState>(
+      body: BlocBuilder<ConsultantProfileCubit, ConsultantProfileState>(
         builder: (context, state) {
-          if (state is ProfileLoading) {
+          if (state is ConsultantProfileLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.black),
             );
-          } else if (state is ProfileFailure) {
+          } else if (state is ConsultantProfileFailure) {
             return Center(
               child: Text(
                 'Error: ${state.message}',
                 style: GoogleFonts.inter(color: Colors.redAccent, fontSize: 16),
               ),
             );
-          } else if (state is ProfileSuccess) {
+          } else if (state is ConsultantProfileSuccess) {
             final user = state.userModel;
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
@@ -70,9 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: CircleAvatar(
                       radius: 75,
-                      backgroundImage: const AssetImage(
-                        'assets/images/user.jpeg',
-                      ),
+                      backgroundImage: AssetImage('assets/images/user.jpeg'),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -115,21 +114,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 15),
                           _infoRow(
-                            icon: Icons.school,
-                            label: 'University',
-                            value: user.data.university,
-                          ),
-                          const SizedBox(height: 15),
-                          _infoRow(
-                            icon: Icons.account_tree_outlined,
-                            label: 'Department',
-                            value: user.data.department,
-                          ),
-                          const SizedBox(height: 15),
-                          _infoRow(
                             icon: Icons.calendar_today_outlined,
-                            label: 'Graduation Year',
-                            value: user.data.yearsOfGraduation.toString(),
+                            label: 'Year Of Experience ',
+                            value: user.data.yearOfExperience.toString(),
                           ),
                         ],
                       ),

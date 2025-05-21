@@ -1,4 +1,4 @@
-import '../../../data/model/login_response_entity.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/auth_response.dart';
 
 sealed class LoginScreenState {}
 
@@ -23,7 +23,7 @@ class LoginErrorState extends LoginScreenState {
 class NavigateToForgetPasswordScreenState extends LoginScreenState {}
 
 class LoginSuccessState extends LoginScreenState {
-  UserEntity? user;
+  AuthResponse user;
   LoginSuccessState(this.user);
 }
 

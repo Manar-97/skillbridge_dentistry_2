@@ -1,38 +1,45 @@
-// lib/ui/screens/Auth/presentation/password/verify/verify_code_cubit.dart
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skillbridge_dentistry/ui/base/failures/failures.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/pass_response.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/domain/repositories/auth_repo.dart';
+import 'package:injectable/injectable.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/request/verifyOTP_request.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/general_response.dart';
+import '../../../domain/api_result.dart';
+import '../../../domain/repositories/auth_repo.dart';
 
-class VerifyCodeCubit extends Cubit<VerifyCodeState> {
+@injectable
+class VerifyOtpCubit extends Cubit<VerifyOtpState> {
   final AuthRepository authRepository;
 
-  VerifyCodeCubit(this.authRepository) : super(VerifyCodeInitial());
+  @factoryMethod
+  VerifyOtpCubit(this.authRepository) : super(VerifyOtpInitial());
 
-  Future<void> verifyCode(GenericResponseModel request) async {
-    emit(VerifyCodeLoading());
-    // final result = await authRepository.verifyCode(request);
-    //
-    // result.fold(
-    //       (failure) => emit(VerifyCodeError(failure)),
-    //       (response) => emit(VerifyCodeSuccess(response)),
-    // );
+  Future<void> verifyOtp(VerifyOtpRequest request) async {
+    print('VerifyOtpCubit: email=${request.email}, otp=${request.otp}');
+    emit(BaseLoadingState());
+    final Result<GenericResponseModel> result = await authRepository.verifyOtp(
+      request.email,
+      request.otp,
+    );
+    result is Success<GenericResponseModel>
+        ? emit(BaseSuccessState(result.data!))
+        : emit(
+          BaseErrorState((result as ServerFailure).message ?? "Unknown error"),
+        );
   }
 }
 
-abstract class VerifyCodeState {}
+abstract class VerifyOtpState {}
 
-class VerifyCodeInitial extends VerifyCodeState {}
+class VerifyOtpInitial extends VerifyOtpState {}
 
-class VerifyCodeLoading extends VerifyCodeState {}
+class BaseLoadingState extends VerifyOtpState {}
 
-class VerifyCodeSuccess extends VerifyCodeState {
+class BaseSuccessState extends VerifyOtpState {
   final GenericResponseModel response;
-  VerifyCodeSuccess(this.response);
+
+  BaseSuccessState(this.response);
 }
 
-class VerifyCodeError extends VerifyCodeState {
+class BaseErrorState extends VerifyOtpState {
   final String message;
-  VerifyCodeError(this.message);
+  BaseErrorState(this.message);
 }

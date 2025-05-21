@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../../data/model/response/login_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/auth_response.dart';
 import '../../../data/repositories/auth_ds/auth_ds.dart';
 import '../../../domain/api_result.dart';
 import '../../../domain/usecase/login_usecase.dart';
@@ -14,9 +14,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    final Result<LoginResponse> result = await loginUseCase(email, password);
+    final Result<AuthResponse> result = await loginUseCase(email, password);
 
-    if (result is Success<LoginResponse>) {
+    if (result is Success<AuthResponse>) {
       final token = result.data!.token ?? '';
       if (token.isNotEmpty) {
         await authOfflineDS.saveToken(token);
@@ -39,7 +39,7 @@ class LoginInitial extends LoginState {}
 class AuthLoading extends LoginState {}
 
 class AuthSuccess extends LoginState {
-  final LoginResponse loginResponse;
+  final AuthResponse loginResponse;
   AuthSuccess(this.loginResponse);
 }
 

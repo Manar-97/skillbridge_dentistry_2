@@ -41,87 +41,89 @@ class _ConsultantHomeState extends State<ConsultantHome> {
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Text(
-                    'Upload your case',
-                    style: GoogleFonts.getFont(
-                      'Inter',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  GestureDetector(
-                    onTap: () {
-                      pickImageFromCamera();
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.barColor,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    Text(
+                      'Upload your case',
+                      style: GoogleFonts.getFont(
+                        'Inter',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
                       ),
-                      child: const Column(
-                        children: [
-                          Image(
-                            image: AssetImage('assets/images/camera.png'),
-                            height: 200,
-                          ),
-                          Text(
-                            'Take Photo',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    GestureDetector(
+                      onTap: () {
+                        pickImageFromCamera();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.barColor,
+                        ),
+                        child: const Column(
+                          children: [
+                            Image(
+                              image: AssetImage('assets/images/camera.png'),
+                              height: 200,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  GestureDetector(
-                    onTap: () {
-                      pickImageFromGallery();
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Column(
-                        children: [
-                          Image(
-                            image: AssetImage('assets/images/gallary.png'),
-                            height: 200,
-                          ),
-                          Text(
-                            'Choose from Gallery',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                            Text(
+                              'Take Photo',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    GestureDetector(
+                      onTap: () {
+                        pickImageFromGallery();
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Column(
+                          children: [
+                            Image(
+                              image: AssetImage('assets/images/gallary.png'),
+                              height: 200,
+                            ),
+                            Text(
+                              'Choose from Gallery',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

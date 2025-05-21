@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/pass_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/auth_response.dart';
 import '../../../Auth/domain/api_result.dart';
 import '../../../Auth/domain/usecase/register_consultant_usecase.dart';
 
@@ -11,7 +11,7 @@ class RegisterConsultantCubit extends Cubit<RegisterConsultantCubitState> {
 
   @factoryMethod
   RegisterConsultantCubit(this.registerConsultantUseCase)
-      : super(RegisterConsultantInitial());
+    : super(RegisterConsultantInitial());
 
   Future<void> registerConsultant(
     String fullName,
@@ -24,7 +24,7 @@ class RegisterConsultantCubit extends Cubit<RegisterConsultantCubitState> {
     String biography,
   ) async {
     emit(AuthLoading());
-    final Result<GenericResponseModel> result = await registerConsultantUseCase(
+    final Result<AuthResponse> result = await registerConsultantUseCase(
       fullName,
       email,
       password,
@@ -34,10 +34,11 @@ class RegisterConsultantCubit extends Cubit<RegisterConsultantCubitState> {
       department,
       biography,
     );
-    result is Success<GenericResponseModel>
+    result is Success<AuthResponse>
         ? emit(AuthSuccess(result.data!))
         : emit(
-            AuthFailure((result as ServerFailure).message ?? "Unknown error"));
+          AuthFailure((result as ServerFailure).message ?? "Unknown error"),
+        );
   }
 }
 
@@ -48,7 +49,7 @@ class RegisterConsultantInitial extends RegisterConsultantCubitState {}
 class AuthLoading extends RegisterConsultantCubitState {}
 
 class AuthSuccess extends RegisterConsultantCubitState {
-  final GenericResponseModel cosultantRegistResponse;
+  final AuthResponse cosultantRegistResponse;
   AuthSuccess(this.cosultantRegistResponse);
 }
 

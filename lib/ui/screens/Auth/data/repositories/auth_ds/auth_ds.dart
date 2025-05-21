@@ -1,37 +1,44 @@
 import 'dart:io';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/login_response.dart';
-import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/pass_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/general_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/Auth/data/model/response/user.dart';
+
+import '../../model/response/auth_response.dart';
 
 abstract class AuthOnlineDS {
-  Future<GenericResponseModel> registerConsultant(
-      String fullName,
-      String email,
-      String password,
-      File resumePath,
-      File photoPath,
-      String yearOfExperience,
-      String department,
-      String biography);
+  Future<AuthResponse> registerConsultant(
+    String fullName,
+    String email,
+    String password,
+    File resumePath,
+    File photoPath,
+    String yearOfExperience,
+    String department,
+    String biography,
+  );
 
-  Future<GenericResponseModel> registerFreshGraduate(
-      String fullName,
-      String email,
-      String password,
-      String yearOfGraduation,
-      String university,
-      String department,
-      );
+  Future<AuthResponse> registerFreshGraduate(
+    String fullName,
+    String email,
+    String password,
+    String yearOfGraduation,
+    String university,
+    String department,
+  );
 
   Future<GenericResponseModel> forgetPassword(String email);
 
-  Future<LoginResponse> login(String email, String password);
+  Future<AuthResponse> login(String email, String password);
 
   Future<GenericResponseModel> resetPassword(
     String email,
-    String token,
+    String otp,
     String newPassword,
     String confirmPassword,
   );
+
+  Future<GenericResponseModel> verifyOtp(String email, String otp);
+
+  Future<UserModel?> fetchUserProfile();
 }
 
 abstract class AuthOfflineDS {
