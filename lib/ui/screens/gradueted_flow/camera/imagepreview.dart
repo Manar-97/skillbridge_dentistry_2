@@ -16,28 +16,25 @@ class ImagePreviewScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SizedBox(
-                width: 80,
-                height: 35,
-                child: AppButton(
-                    text: 'Add',
-                    onTap: () {
-                      _showSuccessDialog(context);
-                    })),
-          )
+              width: 80,
+              height: 35,
+              child: AppButton(
+                text: 'Add',
+                onTap: () {
+                  _showSuccessDialog(context);
+                },
+              ),
+            ),
+          ),
         ],
       ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height * 0.8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Image.file(
-              imageFile,
-              fit: BoxFit.contain,
-            ),
+            child: Image.file(imageFile, fit: BoxFit.contain),
           ),
         ),
       ),
@@ -47,18 +44,21 @@ class ImagePreviewScreen extends StatelessWidget {
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: true, // يمنع الإغلاق بالنقر خارج النافذة
+      barrierDismissible: true,
       builder: (context) {
         return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('assets/success_icon.png',
-                    width: 80), // ضع صورة علامة الصح هنا
+                Image.asset(
+                  'assets/images/success_icon.png',
+                  width: 80,
+                ), // ضع صورة علامة الصح هنا
                 const SizedBox(height: 15),
                 const Text(
                   "Add Success",
@@ -72,8 +72,14 @@ class ImagePreviewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 AppButton(
-                  onTap: () => Navigator.pushReplacementNamed(
-                      context, CaseDescription.routeName),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder:
+                            (context) => CaseDescription(imageFile: imageFile),
+                      ),
+                    );
+                  },
                   text: "Add Disease",
                 ),
               ],

@@ -7,9 +7,7 @@ import 'consul_profile/consul_profile.dart';
 class MainConsultantScreen extends StatefulWidget {
   const MainConsultantScreen({
     super.key,
-    required this.fullName,
   });
-  final String fullName;
   static const String routeName = 'mainconsul';
 
   @override
@@ -22,7 +20,7 @@ class _MainConsultantScreenState extends State<MainConsultantScreen> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> tabs = [
-      ConsultantHome(fullName: widget.fullName),
+      ConsultantHome(),
       const ConsultantCases(),
       ConsultantProfileScreen(),
     ];

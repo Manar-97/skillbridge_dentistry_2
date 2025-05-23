@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_details.dart';
+import '../../../../di/di.dart';
 import '../../../utils/appcolors.dart';
-import '../../../utils/widgets/imagemethods.dart';
+import 'camera_vm.dart';
 import 'imagepreview.dart';
 
 class CameraCases extends StatefulWidget {
@@ -45,15 +45,15 @@ class _CameraCasesState extends State<CameraCases> {
                     Text(
                       'Take Photo',
                       style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w500),
-                    )
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             GestureDetector(
               onTap: () {
                 pickImageFromGallery();
@@ -73,8 +73,10 @@ class _CameraCasesState extends State<CameraCases> {
                     Text(
                       'Choose from Gallery',
                       style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w500),
-                    )
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -111,7 +113,11 @@ class _CameraCasesState extends State<CameraCases> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ImagePreviewScreen(imageFile: imageFile),
+        builder:
+            (context) => BlocProvider(
+              create: (_) => getIt<UploadCaseCubit>(),
+              child: ImagePreviewScreen(imageFile: imageFile),
+            ),
       ),
     );
   }

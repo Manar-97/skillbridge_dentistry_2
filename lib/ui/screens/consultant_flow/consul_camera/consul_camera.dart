@@ -34,22 +34,26 @@ class _ConsultantCasesState extends State<ConsultantCases> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, ConsultantAcceptedCaseDetails.routeName);
+                          context,
+                          ConsultantAcceptedCaseDetails.routeName,
+                        );
                       },
                       child: Container(
                         height: 75,
                         width: 75,
                         decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/case.png'),
-                                fit: BoxFit.contain)),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/case.png'),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -81,8 +85,8 @@ class _ConsultantCasesState extends State<ConsultantCases> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ConsultantImagePreviewScreen(imageFile: imageFile),
+        builder:
+            (context) => ConsultantImagePreviewScreen(imageFile: imageFile),
       ),
     );
   }

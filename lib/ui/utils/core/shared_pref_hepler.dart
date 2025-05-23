@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../screens/Auth/data/model/response/user.dart';
+import '../../screens/gradueted_flow/data/model/uploaded_case.dart';
 
 class SharedPrefHelper {
   SharedPrefHelper._();
@@ -14,12 +15,18 @@ class SharedPrefHelper {
     await setData('user_data', jsonString);
     await setSecureString('token', user.token);
     await setData('user_role', user.role); // خزني الدور كـ string أو int
+    await setData('full_name', user.fullName); // خزني الدور كـ string أو int
     await saveLogin();
   }
 
   static Future<String?> getUserRole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('user_role');
+  }
+
+  static Future<String?> getFullName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('full_name');
   }
 
   static Future<UserModel?> getUser() async {
@@ -32,6 +39,21 @@ class SharedPrefHelper {
   static Future<void> clearUser() async {
     await removeData('user_data');
     await removeSecureString('token');
+  }
+
+  static Future<void> saveUploadedCase(UploadedCaseModel caseData) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = jsonEncode(caseData.toJson());
+    await prefs.setString('last_uploaded_case', jsonString);
+    print('Case Saved Successfully');
+  }
+
+  static Future<UploadedCaseModel?> getUploadedCase() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('last_uploaded_case');
+    if (jsonString == null) return null;
+    final jsonMap = jsonDecode(jsonString);
+    return UploadedCaseModel.fromJson(jsonMap);
   }
 
   static Future<void> removeData(String key) async {

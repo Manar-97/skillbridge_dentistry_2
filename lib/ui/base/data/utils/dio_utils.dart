@@ -6,9 +6,9 @@ class DioUtils {
   static Dio init() {
     final dio = Dio(BaseOptions(
       baseUrl: 'http://skillbridge1.runasp.net',
-      connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
-      sendTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(minutes: 2),
+      sendTimeout: const Duration(seconds: 30),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

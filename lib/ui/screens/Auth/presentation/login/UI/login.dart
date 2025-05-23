@@ -46,23 +46,18 @@ class _LoginState extends State<Login> {
           if (state is AuthSuccess) {
             print('Role from backend: ${state.loginResponse.user.role}');
             final role = state.loginResponse.user.role ?? '';
-            final fullName = state.loginResponse.user.fullName ?? '';
             final email = state.loginResponse.user.email ?? '';
-            print('Role: $role | Name: $fullName | Email: $email');
+            print('Role: $role | Email: $email');
             print('Role from backend: ${state.loginResponse.user.role}');
             if (role == 'Consultant') {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => MainConsultantScreen(fullName: fullName),
-                ),
+                MaterialPageRoute(builder: (_) => MainConsultantScreen()),
               );
             } else if (role == 'FreshGraduate') {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => MainDentistScreen(fullName: fullName),
-                ),
+                MaterialPageRoute(builder: (_) => MainDentistScreen()),
               );
             } else {
               // ممكن تضيفي هنا صفحة افتراضية أو رسالة خطأ

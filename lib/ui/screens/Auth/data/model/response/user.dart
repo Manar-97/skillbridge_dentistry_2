@@ -1,28 +1,3 @@
-// class UserModel {
-//   final String name;
-//   final String email;
-//   final String role;
-//   final String token;
-//
-//   UserModel({
-//     required this.name,
-//     required this.email,
-//     required this.role,
-//     required this.token,
-//   });
-//
-//   factory UserModel.fromJson(Map<String, dynamic> json) {
-//     return UserModel(
-//       name: json['fullName'] ?? '',
-//       email: json['email'] ?? '',
-//       role: json['role'] ?? '',
-//       token: json['token'] ?? '',
-//     );
-//   }
-//   Map<String, dynamic> toJson() {
-//     return {'fullName': name, 'email': email, 'role': role, 'token': token};
-//   }
-// }
 class UserModel {
   final String id;
   final String token;
@@ -70,7 +45,7 @@ class UserModel {
 class UserData {
   final String university;
   final String department;
-  final String yearsOfGraduation;
+  final int yearsOfGraduation;
   final int yearOfExperience;
   final String profilePicturePath;
   final String resumeLink;
@@ -88,13 +63,20 @@ class UserData {
     return UserData(
       university: json['university'] ?? '',
       department: json['department'] ?? '',
-      yearsOfGraduation: json['yearsOfGraduation'] ?? '',
+      yearsOfGraduation: _parseYearOfGraduation(json['yearsOfGraduation']),
       yearOfExperience: _parseYearOfExperience(json['yearOfExperience']),
       profilePicturePath: json['profilePicturePath'] ?? '',
       resumeLink: json['resumeLink'] ?? '',
     );
   }
   static int _parseYearOfExperience(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value) ?? 0;
+    return 0;
+  }
+
+  static int _parseYearOfGraduation(dynamic value) {
     if (value == null) return 0;
     if (value is int) return value;
     if (value is String) return int.tryParse(value) ?? 0;

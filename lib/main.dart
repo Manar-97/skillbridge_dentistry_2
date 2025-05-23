@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/login/UI/login.dart';
@@ -17,16 +19,20 @@ import 'package:skillbridge_dentistry/ui/screens/consultant_flow/main_consul_scr
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/register/UI/consultant_register.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/register/VM/consultant_register_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/case_description.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/not_found_treat_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/found_treate_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/home/home.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/mains_dentist_creen.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/notification/notification.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/profile/profile_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/register/UI/fresh_register.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/register/VM/fresh_register_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/notification/notification.dart';
+import 'package:skillbridge_dentistry/ui/screens/notification/notification_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/notification/response_case_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/notification/user_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/onboarding/onboarding.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/persona/persona.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/splash/splash.dart';
@@ -52,6 +58,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<VerifyOtpCubit>()),
         BlocProvider(create: (context) => getIt<ProfileCubit>()),
         BlocProvider(create: (context) => getIt<ConsultantProfileCubit>()),
+        BlocProvider(create: (context) => getIt<UploadCaseCubit>()),
+        BlocProvider(create: (context) => getIt<NotificationsCubit>()),
+        BlocProvider(create: (context) => getIt<RespondToCaseCubit>()),
+        // BlocProvider(create: (context) => getIt<UserCubit>()),
       ],
       child: MaterialApp(
         theme: ThemeData(fontFamily: 'Inter'),
@@ -103,35 +113,11 @@ class MyApp extends StatelessWidget {
                 builder: (_) => VerifyCode(email: email),
               );
             case Home.routeName:
-              final args =
-                  settings.arguments == null
-                      ? null
-                      : Map<String, dynamic>.from(settings.arguments as Map);
-              return MaterialPageRoute(
-                builder: (_) => Home(fullName: args?['fullName'] ?? ''),
-              );
+              return MaterialPageRoute(builder: (_) => Home());
             case MainDentistScreen.routeName:
-              final args =
-                  settings.arguments == null
-                      ? null
-                      : Map<String, dynamic>.from(settings.arguments as Map);
-              return MaterialPageRoute(
-                builder:
-                    (_) => MainDentistScreen(
-                      fullName: args?['fullName'] ?? '',
-                    ),
-              );
+              return MaterialPageRoute(builder: (_) => MainDentistScreen());
             case MainConsultantScreen.routeName:
-              final args =
-                  settings.arguments == null
-                      ? null
-                      : Map<String, dynamic>.from(settings.arguments as Map);
-              return MaterialPageRoute(
-                builder:
-                    (_) => MainConsultantScreen(
-                      fullName: args?['fullName'] ?? '',
-                    ),
-              );
+              return MaterialPageRoute(builder: (_) => MainConsultantScreen());
             case CameraCases.routeName:
               return MaterialPageRoute(builder: (_) => const CameraCases());
             case CaseDetails.routeName:
@@ -141,8 +127,23 @@ class MyApp extends StatelessWidget {
                 builder: (_) => const ConsultantAcceptedCaseDetails(),
               );
             case FoundTreatCaseDetails.routeName:
+              final args = settings.arguments as Map<String, dynamic>?;
+              final treatment = args?['treatment'] as String? ?? '';
+              final imageFile = args?['imageFile'] as File?;
+              if (imageFile == null) {
+                return MaterialPageRoute(
+                  builder:
+                      (_) => const Scaffold(
+                        body: Center(child: Text('No image provided')),
+                      ),
+                );
+              }
               return MaterialPageRoute(
-                builder: (_) => const FoundTreatCaseDetails(),
+                builder:
+                    (_) => FoundTreatCaseDetails(
+                      imageFile: imageFile,
+                      treatment: treatment,
+                    ),
               );
             case NotFoundTreatCaseDetails.routeName:
               return MaterialPageRoute(
@@ -153,7 +154,19 @@ class MyApp extends StatelessWidget {
                 builder: (_) => const ConsultantTreatCaseDetails(),
               );
             case CaseDescription.routeName:
-              return MaterialPageRoute(builder: (_) => const CaseDescription());
+              final args = settings.arguments as Map<String, dynamic>?;
+              final imageFile = args?['imageFile'] as File?;
+              if (imageFile == null) {
+                return MaterialPageRoute(
+                  builder:
+                      (_) => const Scaffold(
+                        body: Center(child: Text('No image provided')),
+                      ),
+                );
+              }
+              return MaterialPageRoute(
+                builder: (_) => CaseDescription(imageFile: imageFile),
+              );
             case ConsultantCaseDescription.routeName:
               return MaterialPageRoute(
                 builder: (_) => const ConsultantCaseDescription(),

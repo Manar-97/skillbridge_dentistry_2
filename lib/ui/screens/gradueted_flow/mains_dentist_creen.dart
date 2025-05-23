@@ -5,8 +5,7 @@ import 'camera/camera.dart';
 import 'home/home.dart';
 
 class MainDentistScreen extends StatefulWidget {
-  const MainDentistScreen({super.key, required this.fullName});
-  final String fullName;
+  const MainDentistScreen({super.key});
   static const String routeName = 'maindent';
 
   @override
@@ -18,11 +17,7 @@ class _MainDentistScreenState extends State<MainDentistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> tabs = [
-      Home(fullName: widget.fullName),
-      const CameraCases(),
-      ProfileScreen(),
-    ];
+    List<Widget> tabs = [Home(), const CameraCases(), ProfileScreen()];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => _selectedIndex = index),

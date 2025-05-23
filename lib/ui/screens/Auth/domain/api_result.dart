@@ -23,7 +23,9 @@ class ServerFailure<T> implements Result<T> {
         return ServerFailure(ErrorMessage.badCertificateError);
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
-            e.response!.statusCode!, e.response!.data);
+          e.response!.statusCode!,
+          e.response!.data,
+        );
       case DioExceptionType.cancel:
         return ServerFailure(ErrorMessage.cancelError);
       case DioExceptionType.connectionError:
@@ -35,19 +37,31 @@ class ServerFailure<T> implements Result<T> {
     }
   }
 
-  factory ServerFailure.fromResponse(int statuesCode, dynamic response) {
-    if (statuesCode == 400) {
+  factory ServerFailure.fromResponse(int statusCode, dynamic response) {
+    if (statusCode == 400) {
       return ServerFailure("Reset code is invalid or has expired");
     }
-    if (statuesCode == 401) {
+    if (statusCode == 401) {
       return ServerFailure("Incorrect email or password");
-    } else if (statuesCode == 409) {
-      return ServerFailure('user already exist');
-    } else if (statuesCode == 404) {
+    } else if (statusCode == 409) {
+      return ServerFailure('User already exists');
+    } else if (statusCode == 404) {
       return ServerFailure(ErrorMessage.requestNotFount);
-    } else if (statuesCode >= 500) {
+    } else if (statusCode >= 500) {
       return ServerFailure(ErrorMessage.serverFailure);
     }
-    return ServerFailure(response['error']['message']);
+
+    // ✨ التعامل مع message سواء كانت داخل error أو مباشرة
+    if (response is Map) {
+      if (response.containsKey('error') &&
+          response['error'] is Map &&
+          response['error']['message'] != null) {
+        return ServerFailure(response['error']['message'].toString());
+      } else if (response.containsKey('message')) {
+        return ServerFailure(response['message'].toString());
+      }
+    }
+
+    return ServerFailure(ErrorMessage.unKnown);
   }
 }

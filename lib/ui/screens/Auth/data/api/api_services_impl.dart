@@ -21,7 +21,6 @@ class ApiServicesImpl implements ApiServices {
   ApiServicesImpl(this._dio, this.authOfflineDS);
 
   @override
-  @override
   Future<AuthResponse> login(LoginRequest request) async {
     try {
       final response = await _dio.post(
