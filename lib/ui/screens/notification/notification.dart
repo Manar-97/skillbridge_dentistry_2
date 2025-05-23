@@ -72,7 +72,6 @@ class _NotificationsState extends State<Notifications> {
           } else {
             hideLoadingDialog();
           }
-
           if (state is NotificationsError) {
             ScaffoldMessenger.of(
               context,
@@ -84,7 +83,7 @@ class _NotificationsState extends State<Notifications> {
             if (state is NotificationsLoaded) {
               final notifications = state.notifications;
               if (notifications.isEmpty) {
-                return const Center(child: Text('لا توجد إشعارات حالياً'));
+                return const Center(child: Text('No notifications available'));
               }
 
               return RefreshIndicator(
@@ -111,7 +110,9 @@ class _NotificationsState extends State<Notifications> {
                           notification.notificationId!,
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('تم حذف الإشعار بنجاح')),
+                          const SnackBar(
+                            content: Text('Notification deleted successfully'),
+                          ),
                         );
                       },
                       child: Padding(
@@ -156,7 +157,7 @@ class _NotificationsState extends State<Notifications> {
                                       ),
                                     ),
                             title: Text(
-                              notification.title ?? 'بدون عنوان',
+                              notification.title ?? 'No Title',
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -165,7 +166,7 @@ class _NotificationsState extends State<Notifications> {
                             subtitle: Text(
                               (notification.body?.trim().isNotEmpty ?? false)
                                   ? notification.body!
-                                  : 'لا توجد رسالة',
+                                  : 'No message available',
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.grey.shade700,
@@ -174,7 +175,6 @@ class _NotificationsState extends State<Notifications> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // زر الـ Accept
                                 IconButton(
                                   icon: const Icon(
                                     Icons.check,
@@ -194,7 +194,6 @@ class _NotificationsState extends State<Notifications> {
                                     );
                                   },
                                 ),
-                                // زر الـ Reject
                                 IconButton(
                                   icon: const Icon(
                                     Icons.close,
@@ -211,7 +210,9 @@ class _NotificationsState extends State<Notifications> {
                                         context,
                                       ).showSnackBar(
                                         const SnackBar(
-                                          content: Text('تم حذف الإشعار بنجاح'),
+                                          content: Text(
+                                            'Notification deleted successfully',
+                                          ),
                                         ),
                                       );
                                     }
@@ -230,7 +231,9 @@ class _NotificationsState extends State<Notifications> {
 
             if (state is NotificationsError) {
               return Center(
-                child: Text('حدث خطأ أثناء تحميل الإشعارات: ${state.message}'),
+                child: Text(
+                  'Error while loading notifications: ${state.message}',
+                ),
               );
             }
 

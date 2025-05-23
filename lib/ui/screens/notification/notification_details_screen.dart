@@ -68,7 +68,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
             ),
           ),
       child: Scaffold(
-        appBar: AppBar(title: const Text('تفاصيل الإشعار')),
+        appBar: AppBar(title: const Text('Notification Details')),
         body: BlocListener<RespondToCaseCubit, RespondToCaseState>(
           listener: (context, state) {
             if (state is RespondToCaseLoading) {
@@ -81,7 +81,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    state.response.message ?? 'تم إرسال الرد بنجاح',
+                    state.response.message ?? 'Response sent successfully',
                   ),
                 ),
               );
@@ -101,7 +101,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                 child: ListView(
                   children: [
                     Text(
-                      widget.notification.title ?? 'بدون عنوان',
+                      widget.notification.title ?? 'No Title',
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w600,
                         fontSize: 22,
@@ -109,7 +109,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      diagnosisText ?? 'لا توجد تفاصيل',
+                      diagnosisText ?? 'No details available',
                       style: GoogleFonts.inter(fontSize: 18),
                     ),
                     const SizedBox(height: 20),
@@ -121,7 +121,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                       ),
                     const SizedBox(height: 20),
                     const Text(
-                      'أدخل العلاج:',
+                      'Enter Treatment:',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -133,7 +133,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                       maxLines: 5,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'أدخل العلاج هنا',
+                        hintText: 'Enter treatment here',
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -142,24 +142,29 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                         final treatment = treatmentController.text.trim();
                         if (treatment.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('يرجى إدخال العلاج')),
+                            const SnackBar(
+                              content: Text('Please enter treatment'),
+                            ),
                           );
                           return;
                         }
 
-                        // مهم جداً: عيّن القيم الصحيحة لحقل caseConsultantId و caseRequestId حسب بيانات الحالة عندك
+                        // Important: Set the correct values for caseConsultantId and caseRequestId from your data
                         final request = RespondToCaseRequestModel(
-                          caseConsultantId: 0, // عيّن هذا معرف المستشار المناسب
-                          diagnosis: diagnosisText ?? 'بدون تشخيص',
+                          caseConsultantId: 0, // Set correct consultant ID
+                          diagnosis: diagnosisText ?? 'No diagnosis',
                           treatment: treatment,
-                          caseRequestId: 0, // عيّن هذا معرف الطلب المناسب
+                          caseRequestId:
+                              widget
+                                  .notification
+                                  .notificationId!, // Set correct request ID
                         );
 
                         context.read<RespondToCaseCubit>().sendResponse(
                           request,
                         );
                       },
-                      child: const Text('حفظ العلاج'),
+                      child: const Text('Send Treatment'),
                     ),
                   ],
                 ),

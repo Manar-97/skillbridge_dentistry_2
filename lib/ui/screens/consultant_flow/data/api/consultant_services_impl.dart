@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/data/model/respond_to_case.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/level/model/cosult_level_model.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/repositories/case_ds/case_ds.dart';
 import '../../../../utils/core/shared_pref_hepler.dart';
 import 'consultant_services.dart';
@@ -37,6 +38,34 @@ class ConsultantServicesImpl implements ConsultantServices {
         print('Response Case Error: $errorData');
       } else {
         print('Response Case Error: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ConsultantLevel>> getConsultantLevels() async {
+    try {
+      final token = await SharedPrefHelper.getSecureString('token');
+
+      final response = await _dio.get(
+        '${baseUrl}level/consultants/levels',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      final List<dynamic> data = response.data;
+      return data.map((json) => ConsultantLevel.fromJson(json)).toList();
+    } catch (e) {
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        print('Get Consultant Levels Error: $errorData');
+      } else {
+        print('Get Consultant Levels Error: $e');
       }
       rethrow;
     }

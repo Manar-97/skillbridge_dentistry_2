@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_request.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/repositories/case_ds/case_ds.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/model/consul_rating.dart';
 import '../../../../utils/core/shared_pref_hepler.dart';
 import 'graduated_services.dart';
 
@@ -41,6 +42,76 @@ class GraduatedServicesImpl implements GraduatedServices {
         print('Upload Case Error: ${e.response?.data}');
       } else {
         print('Upload Case Error: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ConsultantForRating>> getConsultantsForRating(
+    int caseRequestId,
+  ) async {
+    try {
+      final token = await SharedPrefHelper.getSecureString('token');
+
+      final response = await _dio.get(
+        '${baseUrl}Rating/consultants-for-rating/$caseRequestId',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      final List<dynamic> data = response.data;
+
+      final consultants =
+          data
+              .map((jsonItem) => ConsultantForRating.fromJson(jsonItem))
+              .toList();
+
+      return consultants;
+    } catch (e) {
+      if (e is DioException) {
+        print('Get Consultants Error: ${e.response?.data}');
+      } else {
+        print('Get Consultants Error: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> rateConsultant(
+    int caseRequestId,
+    String consultantId,
+    int rate,
+  ) async {
+    try {
+      final token = await SharedPrefHelper.getSecureString('token');
+
+      final response = await _dio.post(
+        '${baseUrl}Rating/rate-consultant',
+        data: {
+          'caseRequestId': caseRequestId,
+          'consultantId': consultantId,
+          'rate': rate,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      print('Rating Response: ${response.data}');
+    } catch (e) {
+      if (e is DioException) {
+        print('Rate Consultant Error: ${e.response?.data}');
+      } else {
+        print('Rate Consultant Error: $e');
       }
       rethrow;
     }
