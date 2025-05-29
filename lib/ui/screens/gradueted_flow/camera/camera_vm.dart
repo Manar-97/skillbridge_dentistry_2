@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import '../../../utils/core/shared_pref_hepler.dart';
 import '../../Auth/domain/api_result.dart';
 import '../data/model/case_request.dart';
-import '../data/model/case_response.dart';
+import '../data/model/upload_case_response.dart';
 import '../domain/usecase/upload_case_usecase.dart';
 
 @injectable
@@ -16,6 +17,11 @@ class UploadCaseCubit extends Cubit<UploadCaseState> {
     emit(UploadCaseLoading());
     final Result<UploadCaseResponse> result = await uploadCaseUseCase(request);
     if (result is Success<UploadCaseResponse>) {
+      await SharedPrefHelper.setInt(
+        'last_uploaded_case_id',
+        result.data!.caseRequestId,
+      );
+      print('Saved caseRequestId==============${result.data!.caseRequestId}');
       emit(UploadCaseSuccess(result.data!));
     } else if (result is ServerFailure) {
       emit(

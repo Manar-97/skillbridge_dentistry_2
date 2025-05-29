@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/data/model/notifications_dm.dart';
-
-import '../../../../utils/core/shared_pref_hepler.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
+import '../../../../../utils/core/shared_pref_hepler.dart';
 import 'notifications_services.dart';
 
 @Injectable(as: NotificationsServices)

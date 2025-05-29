@@ -3,9 +3,9 @@ import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/mains_dentist_cr
 
 import '../../../../utils/widgets/appButton.dart';
 
-class NotFoundTreatCaseDetails extends StatelessWidget {
-  const NotFoundTreatCaseDetails({super.key});
-  static const String routeName = 'notfound';
+class ResponseToCase extends StatelessWidget {
+  const ResponseToCase({super.key});
+  static const String routeName = 'response';
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +23,19 @@ class NotFoundTreatCaseDetails extends StatelessWidget {
                 style: TextStyle(fontSize: 22),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: AppButton(
                   onTap: () {
                     Navigator.pushReplacementNamed(
-                        context, MainDentistScreen.routeName);
+                      context,
+                      MainDentistScreen.routeName,
+                    );
                   },
                   text: "OK",
                 ),
-              )
+              ),
             ],
           ),
         ),

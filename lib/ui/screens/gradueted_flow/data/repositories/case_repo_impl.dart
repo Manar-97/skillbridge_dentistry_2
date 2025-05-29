@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/domain/api_result.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_request.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/upload_case_response.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/repositories/case_ds/case_ds.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/model/consul_rating.dart';
 import '../../domain/repositories/case_repo.dart';
@@ -27,14 +28,14 @@ class CaseRepositoryImpl implements CaseRepository {
   }
 
   @override
-  Future<Result<List<ConsultantForRating>>> getConsultantsForRating(
+  Future<Result<ConsultantForRating>> getConsultantsForRating(
     int caseRequestId,
   ) async {
     try {
       final response = await caseOnlineDS.getConsultantsForRating(
         caseRequestId,
       );
-      return Success(response);
+      return Success(response as ConsultantForRating?);
     } on DioException catch (e) {
       return ServerFailure.fromDioError(e);
     } catch (e) {
@@ -51,6 +52,20 @@ class CaseRepositoryImpl implements CaseRepository {
     try {
       await caseOnlineDS.rateConsultant(caseRequestId, consultantId, rate);
       return Success(null);
+    } on DioException catch (e) {
+      return ServerFailure.fromDioError(e);
+    } catch (e) {
+      return ServerFailure(e.toString());
+    }
+  }
+
+  @override
+  Future<Result<List<CaseResponseModel>>> getCaseResponses(
+    int caseRequestId,
+  ) async {
+    try {
+      final responses = await caseOnlineDS.getCaseResponses(caseRequestId);
+      return Success(responses);
     } on DioException catch (e) {
       return ServerFailure.fromDioError(e);
     } catch (e) {

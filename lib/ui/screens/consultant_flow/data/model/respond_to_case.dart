@@ -3,8 +3,16 @@ class RespondToCaseResponseModel {
 
   RespondToCaseResponseModel({required this.message});
 
-  factory RespondToCaseResponseModel.fromJson(Map<String, dynamic> json) {
-    return RespondToCaseResponseModel(message: json['message'] ?? '');
+  factory RespondToCaseResponseModel.fromJson(dynamic json) {
+    // هنا نفترض أن json هو String وليس Map
+    if (json is String) {
+      return RespondToCaseResponseModel(message: json);
+    }
+    // لو كان خريطة:
+    if (json is Map<String, dynamic>) {
+      return RespondToCaseResponseModel(message: json['message'] ?? '');
+    }
+    return RespondToCaseResponseModel(message: '');
   }
 }
 

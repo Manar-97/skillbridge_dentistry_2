@@ -21,4 +21,25 @@ class AuthOfflineDSImpl implements AuthOfflineDS {
     await SharedPrefHelper.setSecureString(SharedPrefKeys.token, token);
     print('Token saved');
   }
+
+  @override
+  Future<void> saveConsultantId(String consultantId) async {
+    print('Saving consultantId: $consultantId'); // تأكدي من طباعتها
+    await SharedPrefHelper.setSecureString('consultantId', consultantId);
+    print('consultantId saved');
+  }
+
+  @override
+  Future<void> saveFreshGradId(String freshGradId) async {
+    print('Saving freshGradId: $freshGradId'); // تأكدي من طباعتها
+    await SharedPrefHelper.setSecureString('freshGradId', freshGradId);
+    print('freshGradId saved');
+  }
+
+  @override
+  Future<void> saveUserId(String userId) async {
+    print('Saving userId: $userId'); // تأكدي من طباعتها
+    await SharedPrefHelper.setSecureString('userId', userId);
+    print('userId saved');
+  }
 }

@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_request.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/upload_case_response.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/repositories/case_ds/case_ds.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/model/consul_rating.dart';
 import '../../../../utils/core/shared_pref_hepler.dart';
@@ -33,7 +34,6 @@ class GraduatedServicesImpl implements GraduatedServices {
 
       final caseResponse = UploadCaseResponse.fromJson(response.data);
 
-      // ✅ لو محتاج تخزن شيء بعد الرفع، أضفه هنا
       await caseOfflineDS.saveUploadedCase(caseResponse.toModel());
 
       return caseResponse;
@@ -53,7 +53,6 @@ class GraduatedServicesImpl implements GraduatedServices {
   ) async {
     try {
       final token = await SharedPrefHelper.getSecureString('token');
-
       final response = await _dio.get(
         '${baseUrl}Rating/consultants-for-rating/$caseRequestId',
         options: Options(
@@ -63,14 +62,11 @@ class GraduatedServicesImpl implements GraduatedServices {
           },
         ),
       );
-
       final List<dynamic> data = response.data;
-
       final consultants =
           data
               .map((jsonItem) => ConsultantForRating.fromJson(jsonItem))
               .toList();
-
       return consultants;
     } catch (e) {
       if (e is DioException) {
@@ -113,6 +109,36 @@ class GraduatedServicesImpl implements GraduatedServices {
       } else {
         print('Rate Consultant Error: $e');
       }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CaseResponseModel>> getCaseResponses(int caseRequestId) async {
+    try {
+      final token = await SharedPrefHelper.getSecureString('token');
+      final response = await _dio.get(
+        '${baseUrl}RespondToCase/case-responses/$caseRequestId',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      final data = response.data as List;
+      print('Rating Response: $data');
+
+      // ✅ ارجع القائمة بعد التحويل
+      return data.map((json) => CaseResponseModel.fromJson(json)).toList();
+    } catch (e) {
+      if (e is DioException) {
+        print('Get Consultants Error: $e');
+      } else {
+        print('Get Consultants Error: $e');
+      }
+
+      // ✅ ارمي الخطأ حتى تلتقطه الكيوبت أو من يستدعي الدالة
       rethrow;
     }
   }

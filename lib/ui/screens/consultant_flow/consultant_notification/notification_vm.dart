@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/data/model/notifications_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/domain/api_result.dart';
 import 'domain/usecase/delete_notifications_usecase.dart';
 import 'domain/usecase/get_all_notifications_usecase.dart';

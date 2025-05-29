@@ -4,6 +4,7 @@ import 'package:skillbridge_dentistry/ui/screens/consultant_flow/data/model/resp
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/level/model/cosult_level_model.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/repositories/case_ds/case_ds.dart';
 import '../../../../utils/core/shared_pref_hepler.dart';
+import '../model/case_consultant_model.dart';
 import 'consultant_services.dart';
 
 @Injectable(as: ConsultantServices)
@@ -30,8 +31,7 @@ class ConsultantServicesImpl implements ConsultantServices {
           },
         ),
       );
-      final caseResponse = RespondToCaseResponseModel.fromJson(response.data);
-      return caseResponse;
+      return RespondToCaseResponseModel.fromJson(response.data);
     } catch (e) {
       if (e is DioException) {
         final errorData = e.response?.data;
@@ -68,6 +68,37 @@ class ConsultantServicesImpl implements ConsultantServices {
         print('Get Consultant Levels Error: $e');
       }
       rethrow;
+    }
+  }
+
+  @override
+  Future<List<CaseConsultantModel>> getCaseConsultantData(
+    int caseRequestId,
+  ) async {
+    try {
+      final token = await SharedPrefHelper.getSecureString('token');
+      print(
+        'REQUEST[GET] => PATH: http://skillbridge1.runasp.net/api/RespondToCase/GetCaseConsultantsForCaseRequest/$caseRequestId',
+      );
+
+      final response = await _dio.get(
+        '${baseUrl}RespondToCase/GetCaseConsultantsForCaseRequest/$caseRequestId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      print('RESPONSE[${response.statusCode}] => DATA: ${response.data}');
+
+      if (response.statusCode == 200 && response.data is List) {
+        return (response.data as List)
+            .map((json) => CaseConsultantModel.fromJson(json))
+            .toList();
+      } else {
+        print('Failed to load consultants: ${response.statusCode}');
+        throw Exception('Failed to load case consultants');
+      }
+    } catch (e) {
+      print('Error fetching consultants: $e');
+      throw Exception('Error fetching consultants: $e');
     }
   }
 }

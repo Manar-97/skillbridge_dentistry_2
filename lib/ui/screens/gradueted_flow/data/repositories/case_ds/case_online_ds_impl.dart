@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/api/graduated_services.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_request.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/upload_case_response.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/model/consul_rating.dart';
 import 'case_ds.dart';
 
@@ -27,5 +28,10 @@ class CaseOnlineDSImpl implements CaseOnlineDS {
     int rate,
   ) {
     return graduatedServices.rateConsultant(caseRequestId, consultantId, rate);
+  }
+
+  @override
+  Future<List<CaseResponseModel>> getCaseResponses(int caseRequestId) {
+    return graduatedServices.getCaseResponses(caseRequestId);
   }
 }

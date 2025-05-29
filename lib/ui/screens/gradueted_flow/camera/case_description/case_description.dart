@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/found_treate_case_details.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/case_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/upload_case_response.dart';
 import 'package:skillbridge_dentistry/ui/utils/widgets/appButton.dart';
 import '../../../../utils/core/shared_pref_hepler.dart';
 import '../../data/model/case_request.dart';
@@ -40,6 +40,8 @@ class _CaseDescriptionState extends State<CaseDescription> {
           } else if (state is UploadCaseSuccess) {
             Navigator.pop(context); // Close dialog
             await SharedPrefHelper.saveUploadedCase(state.response.toModel());
+            final caseRequestId = state.response.caseRequestId;
+            print('Uploaded caseRequestId: $caseRequestId');
             if (state.response.treatment ==
                 "Sent Case For Specific Consultant") {
               _showSentToConsultantDialog(context);

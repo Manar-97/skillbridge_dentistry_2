@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/login/UI/login.dart';
@@ -13,8 +12,12 @@ import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/paswword/veri
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_camera/consul_accepted_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_camera/consul_case_description/consul_case_description.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_camera/consul_treate_case_details.dart';
-import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_notification/consul_notification.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_profile/consul_profile_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/case_consultant_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification_vm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/response_to_case_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/level/level_screen.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/level/level_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/main_consul_screen.dart';
@@ -26,16 +29,14 @@ import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_desc
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/not_found_treat_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/found_treate_case_details.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/fresh_notification.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/fresh_notification_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/home/home.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/mains_dentist_creen.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/profile/profile_vm.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/rate_screen.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/rating/rate_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/register/UI/fresh_register.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/register/VM/fresh_register_vm.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/notification.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/notification_vm.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/response_case_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/onboarding/onboarding.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/persona/persona.dart';
 import 'package:skillbridge_dentistry/ui/screens/splash_and_onboarding/splash/splash.dart';
@@ -66,6 +67,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<RespondToCaseCubit>()),
         BlocProvider(create: (context) => getIt<RatingCubit>()),
         BlocProvider(create: (context) => getIt<LevelCubit>()),
+        BlocProvider(create: (context) => getIt<CaseConsultantCubit>()),
+        BlocProvider(create: (context) => getIt<FreshGraduatedNotificationCubit>()),
       ],
       child: MaterialApp(
         theme: ThemeData(fontFamily: 'Inter'),
@@ -149,10 +152,8 @@ class MyApp extends StatelessWidget {
                       treatment: treatment,
                     ),
               );
-            case NotFoundTreatCaseDetails.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const NotFoundTreatCaseDetails(),
-              );
+            case ResponseToCase.routeName:
+              return MaterialPageRoute(builder: (_) => const ResponseToCase());
             case ConsultantTreatCaseDetails.routeName:
               return MaterialPageRoute(
                 builder: (_) => const ConsultantTreatCaseDetails(),
@@ -175,17 +176,19 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const ConsultantCaseDescription(),
               );
-            case Notifications.routeName:
-              return MaterialPageRoute(builder: (_) => const Notifications());
             case ConsultantNotifications.routeName:
               return MaterialPageRoute(
                 builder: (_) => const ConsultantNotifications(),
-              );case RatingScreen.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const RatingScreen(),
-              );case ConsultantLevelScreen.routeName:
+              );
+            // case RatingScreen.routeName:
+            //   return MaterialPageRoute(builder: (_) => const RatingScreen());
+            case ConsultantLevelScreen.routeName:
               return MaterialPageRoute(
                 builder: (_) => const ConsultantLevelScreen(),
+              );
+            case FreshGraduatedNotification.routeName:
+              return MaterialPageRoute(
+                builder: (_) => FreshGraduatedNotification(),
               );
             default:
               return MaterialPageRoute(builder: (_) => const SplashScreen());

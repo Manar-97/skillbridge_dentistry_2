@@ -5,8 +5,8 @@ import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera.da
 import 'package:skillbridge_dentistry/ui/utils/widgets/appButton.dart';
 import '../../../utils/widgets/casecontainer.dart';
 import '../../../utils/widgets/recommendedcontainer.dart';
-import '../../notification/notification.dart';
 import '../camera/case_description/case_description.dart';
+import '../fresh_grade_notification/fresh_notification.dart';
 import '../profile/profile_vm.dart';
 
 class Home extends StatefulWidget {
@@ -57,7 +57,10 @@ class _HomeState extends State<Home> {
                     child: IconButton(
                       icon: const Icon(Icons.notifications_none, size: 28),
                       onPressed: () {
-                        Navigator.pushNamed(context, Notifications.routeName);
+                        Navigator.pushNamed(
+                          context,
+                          FreshGraduatedNotification.routeName,
+                        );
                       },
                     ),
                   ),

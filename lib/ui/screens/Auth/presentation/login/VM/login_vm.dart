@@ -18,8 +18,11 @@ class LoginCubit extends Cubit<LoginState> {
 
     if (result is Success<AuthResponse>) {
       final token = result.data!.token ?? '';
+      final userId = result.data!.user.id ?? '';
       if (token.isNotEmpty) {
         await authOfflineDS.saveToken(token);
+        await authOfflineDS.saveUserId(userId);
+        print('==================================$userId');
       } else {
         print('==================Token not found');
       }

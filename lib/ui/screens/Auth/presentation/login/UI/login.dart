@@ -47,7 +47,8 @@ class _LoginState extends State<Login> {
             print('Role from backend: ${state.loginResponse.user.role}');
             final role = state.loginResponse.user.role ?? '';
             final email = state.loginResponse.user.email ?? '';
-            print('Role: $role | Email: $email');
+            final id = state.loginResponse.user.id ?? '';
+            print('Role: $role | Email: $email | Id: $id');
             print('Role from backend: ${state.loginResponse.user.role}');
             if (role == 'Consultant') {
               Navigator.push(

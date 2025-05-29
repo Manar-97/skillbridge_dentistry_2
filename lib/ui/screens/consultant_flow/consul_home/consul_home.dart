@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification.dart';
 import 'package:skillbridge_dentistry/ui/utils/appcolors.dart';
 import '../../gradueted_flow/profile/profile_vm.dart';
-import '../../notification/notification.dart';
 import '../consul_camera/consul_image_preview.dart';
-import '../consul_notification/consul_notification.dart';
 
 class ConsultantHome extends StatefulWidget {
   const ConsultantHome({super.key});
@@ -57,10 +56,7 @@ class _ConsultantHomeState extends State<ConsultantHome> {
                     child: IconButton(
                       icon: const Icon(Icons.notifications_none, size: 28),
                       onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          Notifications.routeName,
-                        );
+                        Navigator.pushNamed(context, ConsultantNotifications.routeName);
                       },
                     ),
                   ),

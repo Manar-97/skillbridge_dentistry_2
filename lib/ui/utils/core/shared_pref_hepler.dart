@@ -36,9 +36,29 @@ class SharedPrefHelper {
     return UserModel.fromJson(jsonMap);
   }
 
+  static Future<void> setInt(String key, int value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(key, value);
+  }
+
+  static Future<int?> getInt(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(key);
+  }
+
   static Future<void> clearUser() async {
     await removeData('user_data');
     await removeSecureString('token');
+  }
+
+  static Future<String?> getConsultantId() async {
+    final user = await getUser();
+    return user?.data.consultantId;
+  }
+
+  static Future<String?> getFreshGraduatedId() async {
+    final user = await getUser();
+    return user?.data.freshGradId;
   }
 
   static Future<void> saveUploadedCase(UploadedCaseModel caseData) async {
@@ -91,10 +111,10 @@ class SharedPrefHelper {
     return sharedPreferences.getString(key) ?? "";
   }
 
-  static Future<int?> getInt(String key) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getInt(key);
-  }
+  // static Future<int?> getInt(String key) async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   return sharedPreferences.getInt(key);
+  // }
 
   static Future<double?> getDouble(String key) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

@@ -47,16 +47,20 @@ class UserData {
   final String department;
   final int yearsOfGraduation;
   final int yearOfExperience;
-  final String profilePicturePath;
-  final String resumeLink;
+  final String? profilePicturePath;
+  final String? resumeLink;
+  final String? consultantId;
+  final String? freshGradId;
 
   UserData({
     required this.university,
     required this.department,
     required this.yearsOfGraduation,
     required this.yearOfExperience,
-    required this.profilePicturePath,
-    required this.resumeLink,
+    this.profilePicturePath,
+    this.resumeLink,
+    this.consultantId,
+    this.freshGradId,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -67,6 +71,8 @@ class UserData {
       yearOfExperience: _parseYearOfExperience(json['yearOfExperience']),
       profilePicturePath: json['profilePicturePath'] ?? '',
       resumeLink: json['resumeLink'] ?? '',
+      consultantId: json['consultantId'] ?? '',
+      freshGradId: json['freshGradId'] ?? '',
     );
   }
   static int _parseYearOfExperience(dynamic value) {
@@ -91,6 +97,8 @@ class UserData {
       'yearOfExperience': yearOfExperience,
       'profilePicturePath': profilePicturePath,
       'resumeLink': resumeLink,
+      'consultantId': consultantId,
+      'freshGradId': freshGradId,
     };
   }
 }

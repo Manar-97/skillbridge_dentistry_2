@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/data/api/notifications_services.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/data/model/notifications_dm.dart';
-
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/api/notifications_services.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
 import 'notifications_ds.dart';
 
 @Injectable(as: NotificationsOnlineDS)

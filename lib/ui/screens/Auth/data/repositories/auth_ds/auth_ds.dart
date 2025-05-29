@@ -43,6 +43,9 @@ abstract class AuthOnlineDS {
 
 abstract class AuthOfflineDS {
   Future<void> saveToken(String token);
+  Future<void> saveConsultantId(String consultantId);
+  Future<void> saveFreshGradId(String freshGradId);
+  Future<void> saveUserId(String userId);
   Future<void> deleteToken();
   Future<String> getToken();
 }

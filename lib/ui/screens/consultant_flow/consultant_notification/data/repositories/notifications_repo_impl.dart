@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/domain/api_result.dart';
-
-import 'package:skillbridge_dentistry/ui/screens/notification/data/model/notifications_dm.dart';
-import 'package:skillbridge_dentistry/ui/screens/notification/data/repositories/notifications_ds/notifications_ds.dart';
-
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/repositories/notifications_ds/notifications_ds.dart';
 import '../../domain/repositories/notifications_repo.dart';
 
 @Injectable(as: NotificationsRepositories)

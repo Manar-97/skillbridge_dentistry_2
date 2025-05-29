@@ -35,7 +35,7 @@ class ApiServicesImpl implements ApiServices {
         'token',
         loginResponse.token,
       ); // يحفظ التوكن الرسمي في التخزين الآمن
-
+      await SharedPrefHelper.setSecureString('userId', loginResponse.user.id);
       return loginResponse;
     } catch (e) {
       if (e is DioException) {
