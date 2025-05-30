@@ -1,13 +1,16 @@
 class ConsultantForRating {
-  final String id;
-  final String name;
+  final String consultantId;
+  final int caseConsultantId;
 
-  ConsultantForRating({required this.id, required this.name});
+  ConsultantForRating({
+    required this.consultantId,
+    required this.caseConsultantId,
+  });
 
   factory ConsultantForRating.fromJson(Map<String, dynamic> json) {
     return ConsultantForRating(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',
+      consultantId: json['consultantId'] ?? '',
+      caseConsultantId: json['caseConsultantId'] ?? '',
     );
   }
 }

@@ -23,11 +23,11 @@ class CaseOnlineDSImpl implements CaseOnlineDS {
 
   @override
   Future<void> rateConsultant(
-    int caseRequestId,
+    int caseConsultantId,
     String consultantId,
     int rate,
   ) {
-    return graduatedServices.rateConsultant(caseRequestId, consultantId, rate);
+    return graduatedServices.rateConsultant(caseConsultantId, consultantId, rate);
   }
 
   @override

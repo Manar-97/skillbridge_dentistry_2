@@ -71,8 +71,8 @@ class UserData {
       yearOfExperience: _parseYearOfExperience(json['yearOfExperience']),
       profilePicturePath: json['profilePicturePath'] ?? '',
       resumeLink: json['resumeLink'] ?? '',
-      consultantId: json['consultantId'] ?? '',
-      freshGradId: json['freshGradId'] ?? '',
+      consultantId: json['consultantId'] as String?,
+      freshGradId: json['freshGradId'] as String?,
     );
   }
   static int _parseYearOfExperience(dynamic value) {

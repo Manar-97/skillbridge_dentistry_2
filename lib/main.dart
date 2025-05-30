@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/login/UI/login.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/login/VM/login_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/Auth/presentation/paswword/forgetpassword/forgetpassword.dart';
@@ -29,6 +31,8 @@ import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_desc
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/not_found_treat_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/found_treate_case_details.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/model/upload_case_response.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/conul_for_rating_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/fresh_notification.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/fresh_notification_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/home/home.dart';
@@ -44,6 +48,15 @@ import 'di/di.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // تهيئة Hive
+  await Hive.initFlutter();
+
+  // تسجيل adapter الخاص بالموديل
+  Hive.registerAdapter(UploadCaseResponseAdapter());
+
+  // فتح الـ Box (الصندوق) الخاص بالحفظ
+  await Hive.openBox<UploadCaseResponse>('upload_case_response');
   await configureDependencies();
   runApp(const MyApp());
 }
@@ -68,12 +81,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<RatingCubit>()),
         BlocProvider(create: (context) => getIt<LevelCubit>()),
         BlocProvider(create: (context) => getIt<CaseConsultantCubit>()),
-        BlocProvider(create: (context) => getIt<FreshGraduatedNotificationCubit>()),
+        BlocProvider(
+          create: (context) => getIt<FreshGraduatedNotificationCubit>(),
+        ),
+        BlocProvider(create: (context) => getIt<ConsultantsForRatingCubit>()),
       ],
       child: MaterialApp(
         theme: ThemeData(fontFamily: 'Inter'),
         debugShowCheckedModeBanner: false,
-        initialRoute: Login.routeName,
+        initialRoute: SplashScreen.routeName,
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case SplashScreen.routeName:

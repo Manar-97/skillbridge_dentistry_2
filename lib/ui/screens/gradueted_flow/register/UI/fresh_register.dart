@@ -260,9 +260,7 @@ class _FreshGraduatedRegisterState extends State<FreshGraduatedRegister> {
                 items:
                     [
                           'Periodontics',
-                          'Orthodontics',
                           'Pathology Dentistry',
-                          'Oral Surgery',
                           'Operative Dentistry',
                           'Other',
                         ]

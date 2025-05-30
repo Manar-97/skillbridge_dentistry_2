@@ -253,9 +253,7 @@ class _ConsultantRegisterState extends State<ConsultantRegister> {
                 items:
                     [
                           'Periodontics',
-                          'Orthodontics',
                           'Pathology Dentistry',
-                          'Oral Surgery',
                           'Operative Dentistry',
                           'Other',
                         ]

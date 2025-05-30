@@ -24,25 +24,30 @@ class FreshGraduatedNotificationCubit
   Future<void> fetchCaseResponses(int caseRequestId) async {
     emit(FreshGraduatedNotificationLoading());
 
-    final Result<List<CaseResponseModel>> result =
-        await getCaseResponsesUseCase(caseRequestId);
+    try {
+      final result = await getCaseResponsesUseCase(caseRequestId);
+      print("Result from use case: $result");
 
-    if (result is Success<List<CaseResponseModel>>) {
-      final data = result.data;
-      print("Fetched Data: $data");
-      if (data != null && data.isNotEmpty) {
-        emit(FreshGraduatedNotificationSuccess(data));
+      if (result is Success<List<CaseResponseModel>>) {
+        final data = result.data;
+        print("Fetched Data: $data");
+        if (data != null && data.isNotEmpty) {
+          emit(FreshGraduatedNotificationSuccess(data));
+        } else {
+          emit(FreshGraduatedNotificationFailure("لا توجد ردود حاليًا."));
+        }
+      } else if (result is ServerFailure) {
+        emit(
+          FreshGraduatedNotificationFailure(
+            (result as ServerFailure).message ?? 'حدث خطأ في الاتصال بالخادم',
+          ),
+        );
       } else {
-        emit(FreshGraduatedNotificationFailure("لا توجد ردود حاليًا."));
+        emit(FreshGraduatedNotificationFailure("فشل غير متوقع"));
       }
-    } else if (result is ServerFailure) {
-      emit(
-        FreshGraduatedNotificationFailure(
-          (result as ServerFailure).message ?? 'حدث خطأ في الاتصال بالخادم',
-        ),
-      );
-    } else {
-      emit(FreshGraduatedNotificationFailure("فشل غير متوقع"));
+    } catch (e, stack) {
+      print("Exception: $e\n$stack");
+      emit(FreshGraduatedNotificationFailure("حدث خطأ غير متوقع"));
     }
   }
 }

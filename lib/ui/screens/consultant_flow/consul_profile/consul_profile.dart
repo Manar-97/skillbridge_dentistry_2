@@ -114,6 +114,12 @@ class _ConsultantProfileScreenState extends State<ConsultantProfileScreen> {
                           ),
                           const SizedBox(height: 15),
                           _infoRow(
+                            icon: Icons.account_tree_outlined,
+                            label: 'Department ',
+                            value: user.data.department,
+                          ),
+                          const SizedBox(height: 15),
+                          _infoRow(
                             icon: Icons.calendar_today_outlined,
                             label: 'Year Of Experience ',
                             value: user.data.yearOfExperience.toString(),

@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/data/model/respond_to_case.dart';
+import 'package:skillbridge_dentistry/ui/screens/consultant_flow/level/model/cosult_level_model.dart';
 import '../../api/consultant_services.dart';
 import '../../model/case_consultant_model.dart';
 import 'response_case_ds.dart';
@@ -21,5 +22,10 @@ class ResponseCaseOnlineDSImpl implements ResponseCaseOnlineDS {
     int caseRequestId,
   ) async {
     return consultantServices.getCaseConsultantData(caseRequestId);
+  }
+
+  @override
+  Future<List<ConsultantLevel>> getConsultantLevels() async {
+    return consultantServices.getConsultantLevels();
   }
 }

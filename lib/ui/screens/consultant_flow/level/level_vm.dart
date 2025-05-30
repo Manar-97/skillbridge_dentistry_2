@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/data/api/consultant_services.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/data/api/graduated_services.dart';
 import 'model/cosult_level_model.dart';
 
 @injectable

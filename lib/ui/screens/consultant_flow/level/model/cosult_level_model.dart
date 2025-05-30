@@ -1,13 +1,22 @@
 class ConsultantLevel {
-  final String id;
-  final String name;
+  final String fullName;
+  final double rate;
+  final String shortBiography;
+  final String photoUrl;
 
-  ConsultantLevel({required this.id, required this.name});
+  ConsultantLevel({
+    required this.fullName,
+    required this.rate,
+    required this.shortBiography,
+    required this.photoUrl,
+  });
 
   factory ConsultantLevel.fromJson(Map<String, dynamic> json) {
     return ConsultantLevel(
-      id: json['id'],
-      name: json['name'],
+      fullName: json['fullName'],
+      rate: (json['rate'] as num).toDouble(),
+      shortBiography: json['shortBiography'],
+      photoUrl: json['photoUrl'],
     );
   }
 }

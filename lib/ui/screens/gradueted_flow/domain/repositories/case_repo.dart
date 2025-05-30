@@ -6,11 +6,11 @@ import '../../rating/model/consul_rating.dart';
 
 abstract class CaseRepository {
   Future<Result<UploadCaseResponse>> uploadCase(UploadCaseRequest request);
-  Future<Result<ConsultantForRating>> getConsultantsForRating(
+  Future<Result<List<ConsultantForRating>>> getConsultantsForRating(
     int caseRequestId,
   );
   Future<Result<void>> rateConsultant(
-    int caseRequestId,
+    int caseConsultantId,
     String consultantId,
     int rate,
   );

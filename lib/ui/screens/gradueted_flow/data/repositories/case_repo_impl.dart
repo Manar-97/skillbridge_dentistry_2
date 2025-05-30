@@ -28,14 +28,14 @@ class CaseRepositoryImpl implements CaseRepository {
   }
 
   @override
-  Future<Result<ConsultantForRating>> getConsultantsForRating(
+  Future<Result<List<ConsultantForRating>>> getConsultantsForRating(
     int caseRequestId,
   ) async {
     try {
       final response = await caseOnlineDS.getConsultantsForRating(
         caseRequestId,
       );
-      return Success(response as ConsultantForRating?);
+      return Success(response);
     } on DioException catch (e) {
       return ServerFailure.fromDioError(e);
     } catch (e) {
@@ -45,12 +45,12 @@ class CaseRepositoryImpl implements CaseRepository {
 
   @override
   Future<Result<void>> rateConsultant(
-    int caseRequestId,
+    int caseConsultantId,
     String consultantId,
     int rate,
   ) async {
     try {
-      await caseOnlineDS.rateConsultant(caseRequestId, consultantId, rate);
+      await caseOnlineDS.rateConsultant(caseConsultantId, consultantId, rate);
       return Success(null);
     } on DioException catch (e) {
       return ServerFailure.fromDioError(e);

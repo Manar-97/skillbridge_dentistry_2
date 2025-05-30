@@ -19,10 +19,17 @@ class LoginCubit extends Cubit<LoginState> {
     if (result is Success<AuthResponse>) {
       final token = result.data!.token ?? '';
       final userId = result.data!.user.id ?? '';
+      final consultantId = result.data!.user.data.consultantId ?? '';
+      final freshGradId = result.data!.user.data.freshGradId ?? '';
       if (token.isNotEmpty) {
         await authOfflineDS.saveToken(token);
         await authOfflineDS.saveUserId(userId);
-        print('==================================$userId');
+        await authOfflineDS.saveConsultantId(consultantId);
+        await authOfflineDS.saveFreshGradId(freshGradId);
+        print('userId==================================$userId');
+        print('consultantId==================================$consultantId');
+        print('freshGradId==================================$freshGradId');
+        print(result.data?.user.data.toJson());
       } else {
         print('==================Token not found');
       }

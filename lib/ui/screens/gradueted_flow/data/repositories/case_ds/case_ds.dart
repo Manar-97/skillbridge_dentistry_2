@@ -7,12 +7,13 @@ import '../../model/uploaded_case.dart';
 abstract class CaseOnlineDS {
   Future<UploadCaseResponse> uploadCase(UploadCaseRequest request);
   Future<List<ConsultantForRating>> getConsultantsForRating(int caseRequestId);
-  Future<void> rateConsultant(int caseRequestId, String consultantId, int rate);
+  Future<void> rateConsultant(int caseConsultantId, String consultantId, int rate);
   Future<List<CaseResponseModel>> getCaseResponses(int caseRequestId);
 
 }
 
 abstract class CaseOfflineDS {
-  Future<void> saveUploadedCase(UploadedCaseModel caseData);
+  Future<void> saveUploadedCase(UploadCaseResponse response);
   Future<UploadedCaseModel?> getUploadedCase();
+  Future<UploadCaseResponse?> getLastUploadCaseResponse();
 }

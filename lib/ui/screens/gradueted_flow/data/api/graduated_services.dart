@@ -7,6 +7,6 @@ import '../model/case_response_dm.dart';
 abstract class GraduatedServices {
   Future<UploadCaseResponse> uploadCase(UploadCaseRequest request);
   Future<List<ConsultantForRating>> getConsultantsForRating(int caseRequestId);
-  Future<void> rateConsultant(int caseRequestId, String consultantId, int rate);
+  Future<void> rateConsultant(int caseConsultantId, String consultantId, int rate);
   Future<List<CaseResponseModel>> getCaseResponses(int caseRequestId);
 }

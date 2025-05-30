@@ -3,6 +3,7 @@ import '../../utils/appcolors.dart';
 import 'consul_camera/consul_camera.dart';
 import 'consul_home/consul_home.dart';
 import 'consul_profile/consul_profile.dart';
+import 'level/level_screen.dart';
 
 class MainConsultantScreen extends StatefulWidget {
   const MainConsultantScreen({
@@ -21,7 +22,7 @@ class _MainConsultantScreenState extends State<MainConsultantScreen> {
   Widget build(BuildContext context) {
     final List<Widget> tabs = [
       ConsultantHome(),
-      const ConsultantCases(),
+      const ConsultantLevelScreen(),
       ConsultantProfileScreen(),
     ];
 

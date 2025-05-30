@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import '../../../utils/core/shared_pref_hepler.dart';
 import '../../Auth/domain/api_result.dart';
@@ -17,11 +18,11 @@ class UploadCaseCubit extends Cubit<UploadCaseState> {
     emit(UploadCaseLoading());
     final Result<UploadCaseResponse> result = await uploadCaseUseCase(request);
     if (result is Success<UploadCaseResponse>) {
-      await SharedPrefHelper.setInt(
-        'last_uploaded_case_id',
-        result.data!.caseRequestId,
-      );
-      print('Saved caseRequestId==============${result.data!.caseRequestId}');
+      final response = result.data!;
+
+      final box = Hive.box<UploadCaseResponse>('upload_case_response');
+      await box.put('last_upload_response', response);
+      print('Saved UploadCaseResponse in Hive with caseRequestId: ${response.caseRequestId}');
       emit(UploadCaseSuccess(result.data!));
     } else if (result is ServerFailure) {
       emit(

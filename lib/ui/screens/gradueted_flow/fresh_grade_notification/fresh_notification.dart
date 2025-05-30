@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/fresh_grade_notification/fresh_notification_details_screen.dart';
-import '../../../utils/core/shared_pref_hepler.dart';
+import 'package:hive/hive.dart';
+import '../../../../di/di.dart';
 import '../data/model/case_response_dm.dart';
+import '../data/model/upload_case_response.dart';
+import '../rating/rate_vm.dart';
+import '../rating/rating.dart';
+import 'conul_for_rating_vm.dart';
 import 'fresh_notification_vm.dart';
 
 class FreshGraduatedNotification extends StatefulWidget {
@@ -27,126 +31,174 @@ class _FreshGraduatedNotificationState
   }
 
   Future<void> _loadCaseRequestIdAndFetch() async {
-    caseRequestId = await SharedPrefHelper.getInt('last_uploaded_case_id');
+    final box = Hive.box<UploadCaseResponse>('upload_case_response');
+    final response = box.get('last_upload_response');
+
+    setState(() {
+      caseRequestId = response?.caseRequestId;
+    });
+
     if (caseRequestId != null) {
-      context
-          .read<FreshGraduatedNotificationCubit>()
-          .fetchCaseResponses(caseRequestId!);
+      context.read<FreshGraduatedNotificationCubit>().fetchCaseResponses(
+        caseRequestId!,
+      );
+      print('caseRequestId from Hive: $caseRequestId');
     } else {
-      print("No caseRequestId found in shared preferences");
+      print("No caseRequestId found in Hive");
     }
+  }
+
+  String? extractImageUrl(String body) {
+    final RegExp regExp = RegExp(
+      r'(http[s]?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp))',
+      caseSensitive: false,
+    );
+    return regExp.firstMatch(body)?.group(0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
       appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
-          "Notifications",
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
+          "Notification",
+          style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
       ),
-      body: BlocListener<FreshGraduatedNotificationCubit,
-          FreshGraduatedNotificationState>(
+      body: BlocListener<
+        FreshGraduatedNotificationCubit,
+        FreshGraduatedNotificationState
+      >(
         listener: (context, state) {
           if (state is FreshGraduatedNotificationFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        child: BlocBuilder<FreshGraduatedNotificationCubit,
-            FreshGraduatedNotificationState>(
+        child: BlocBuilder<
+          FreshGraduatedNotificationCubit,
+          FreshGraduatedNotificationState
+        >(
           builder: (context, state) {
-            if (state is FreshGraduatedNotificationLoading) {
+            if (state is FreshGraduatedNotificationInitial ||
+                state is FreshGraduatedNotificationLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is FreshGraduatedNotificationFailure) {
               return Center(child: Text(state.message));
             } else if (state is FreshGraduatedNotificationSuccess) {
               final responses = state.responses;
-
               if (responses.isEmpty) {
                 return const Center(
-                  child: Text(
-                    "No responses available yet.",
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                  child: Text("No responses available for this case."),
                 );
               }
 
-              return ListView.separated(
+              return ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: responses.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final CaseResponseModel response = responses[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.15),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
+                  return Card(
+                    elevation: 3,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 28,
-                                backgroundImage: NetworkImage(
-                                  response.consultantPhoto,
+                          GestureDetector(
+                            // داخل onTap في قائمة الردود:
+                            onTap: () {
+                              if (caseRequestId == null) {
+                                print("caseRequestId is null");
+                                return;
+                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider(
+                                            create:
+                                                (_) =>
+                                                    getIt<
+                                                        ConsultantsForRatingCubit
+                                                      >()
+                                                      ..fetchConsultants(
+                                                        caseRequestId!,
+                                                      ),
+                                          ),
+                                          BlocProvider(
+                                            create: (_) => getIt<RatingCubit>(),
+                                          ),
+                                        ],
+                                        child: ConsultantsRatingScreen(
+                                          caseRequestId: caseRequestId!,
+                                          consultantName: response.consultantName,
+                                        ),
+                                      ),
                                 ),
-                                onBackgroundImageError:
-                                    (_, __) => const Icon(Icons.person),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                    response.consultantPhoto,
+                                  ),
+                                  onBackgroundImageError:
+                                      (_, __) => const Icon(Icons.person),
+                                ),
+                                const SizedBox(width: 10),
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       response.consultantName,
                                       style: GoogleFonts.inter(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
                                     Text(
                                       "⭐ ${response.rate.toStringAsFixed(1)}",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 14,
-                                        color: Colors.orange[700],
-                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          _buildSection("Biography", response.biography),
-                          const SizedBox(height: 10),
-                          _buildSection("Diagnosis", response.diagnosis),
-                          const SizedBox(height: 10),
-                          _buildSection("Treatment", response.treatment),
+                          const SizedBox(height: 12),
+                          Text(
+                            "Biography:",
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(response.biography),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Diagnosis:",
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(response.diagnosis),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Treatment:",
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(response.treatment),
                         ],
                       ),
                     ),
@@ -158,30 +210,6 @@ class _FreshGraduatedNotificationState
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildSection(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "$title:",
-          style: GoogleFonts.inter(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF333333),
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          content,
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            color: const Color(0xFF555555),
-          ),
-        ),
-      ],
     );
   }
 }

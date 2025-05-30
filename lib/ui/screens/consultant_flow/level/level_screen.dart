@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'level_vm.dart';
+import 'level_vm.dart'; // يفترض أن LevelCubit و LevelState هنا
 
 class ConsultantLevelScreen extends StatefulWidget {
   const ConsultantLevelScreen({super.key});
-  static const String routeName ='consulLevel';
+  static const String routeName = 'consulLevel';
 
   @override
   State<ConsultantLevelScreen> createState() => _ConsultantLevelScreenState();
 }
 
 class _ConsultantLevelScreenState extends State<ConsultantLevelScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // استدعاء تحميل البيانات تلقائياً عند دخول الشاشة
+    context.read<LevelCubit>().fetchLevels();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,25 +27,60 @@ class _ConsultantLevelScreenState extends State<ConsultantLevelScreen> {
           if (state is LevelLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LevelLoaded) {
-            return ListView.builder(
+            if (state.levels.isEmpty) {
+              return const Center(child: Text("No levels found."));
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
               itemCount: state.levels.length,
+              separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {
                 final level = state.levels[index];
                 return ListTile(
-                  leading: const Icon(Icons.star, color: Colors.orange),
-                  title: Text(level.name),
-                  subtitle: Text("ID: ${level.id}"),
+                  leading: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/user.jpeg'),
+                    radius: 25,
+                  ),
+                  title: Text(level.fullName),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Rate: ${level.rate}"),
+                      const SizedBox(height: 4),
+                      Text(
+                        level.shortBiography,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  isThreeLine: true,
                 );
               },
             );
           } else if (state is LevelError) {
-            return Center(child: Text("Error: ${state.message}"));
+            return Center(
+              child: Text(
+                "Error: ${state.message}",
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
           }
-          return const SizedBox.shrink();
+          // حالة البداية أو أي حالة غير متوقعة
+          return const Center(child: Text("Press refresh to load levels."));
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.read<LevelCubit>().fetchLevels(),
+        tooltip: "Refresh Levels",
         child: const Icon(Icons.refresh),
       ),
     );

@@ -33,9 +33,6 @@ class GraduatedServicesImpl implements GraduatedServices {
       );
 
       final caseResponse = UploadCaseResponse.fromJson(response.data);
-
-      await caseOfflineDS.saveUploadedCase(caseResponse.toModel());
-
       return caseResponse;
     } catch (e) {
       if (e is DioException) {
@@ -67,6 +64,7 @@ class GraduatedServicesImpl implements GraduatedServices {
           data
               .map((jsonItem) => ConsultantForRating.fromJson(jsonItem))
               .toList();
+      print(consultants);
       return consultants;
     } catch (e) {
       if (e is DioException) {
@@ -80,7 +78,7 @@ class GraduatedServicesImpl implements GraduatedServices {
 
   @override
   Future<void> rateConsultant(
-    int caseRequestId,
+    int caseConsultantId,
     String consultantId,
     int rate,
   ) async {
@@ -90,7 +88,7 @@ class GraduatedServicesImpl implements GraduatedServices {
       final response = await _dio.post(
         '${baseUrl}Rating/rate-consultant',
         data: {
-          'caseRequestId': caseRequestId,
+          'caseConsultantId': caseConsultantId,
           'consultantId': consultantId,
           'rate': rate,
         },
@@ -117,6 +115,7 @@ class GraduatedServicesImpl implements GraduatedServices {
   Future<List<CaseResponseModel>> getCaseResponses(int caseRequestId) async {
     try {
       final token = await SharedPrefHelper.getSecureString('token');
+      print("Token used: $token");
       final response = await _dio.get(
         '${baseUrl}RespondToCase/case-responses/$caseRequestId',
         options: Options(
@@ -126,9 +125,14 @@ class GraduatedServicesImpl implements GraduatedServices {
           },
         ),
       );
-      final data = response.data as List;
-      print('Rating Response: $data');
-
+      print('Raw response: ${response.data}');
+      final data = response.data;
+      if (data is List) {
+        return data.map((json) => CaseResponseModel.fromJson(json)).toList();
+      } else {
+        print("Unexpected response format: $data");
+        throw Exception("Expected a list but got: ${data.runtimeType}");
+      }
       // ✅ ارجع القائمة بعد التحويل
       return data.map((json) => CaseResponseModel.fromJson(json)).toList();
     } catch (e) {

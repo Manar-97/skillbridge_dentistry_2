@@ -51,12 +51,12 @@ class _LoginState extends State<Login> {
             print('Role: $role | Email: $email | Id: $id');
             print('Role from backend: ${state.loginResponse.user.role}');
             if (role == 'Consultant') {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => MainConsultantScreen()),
               );
             } else if (role == 'FreshGraduate') {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => MainDentistScreen()),
               );
