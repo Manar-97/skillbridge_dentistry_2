@@ -11,7 +11,7 @@ abstract class AuthOnlineDS {
     String password,
     File resumePath,
     File photoPath,
-    String yearOfExperience,
+    String yearsOfExperience,
     String department,
     String biography,
   );

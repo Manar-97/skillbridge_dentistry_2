@@ -131,6 +131,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             label: 'Graduation Year',
                             value: user.data.yearsOfGraduation.toString(),
                           ),
+                          const SizedBox(height: 15),
+                          _infoRow(
+                            icon: Icons.calendar_today_outlined,
+                            label: 'Graduation Year',
+                            value: user.data.yearsOfGraduation.toString(),
+                          ),
                         ],
                       ),
                     ),

@@ -41,7 +41,7 @@ class AuthOnlineDSImpl implements AuthOnlineDS {
       email: email,
       password: password,
       resumePath: resumePath,
-      yearOfExperience: yearOfExperience,
+      yearsOfExperience: yearOfExperience,
       department: department,
       biography: biography,
       photoPath: photoPath,

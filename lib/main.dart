@@ -16,7 +16,6 @@ import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_camera/c
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_camera/consul_treate_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consul_profile/consul_profile_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/case_consultant_vm.dart';
-import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/data/model/notifications_dm.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/response_to_case_vm.dart';
@@ -28,6 +27,7 @@ import 'package:skillbridge_dentistry/ui/screens/consultant_flow/register/VM/con
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera_vm.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/case_description.dart';
+import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/case_disease.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_description/not_found_treat_case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/case_details.dart';
 import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/found_treate_case_details.dart';
@@ -205,6 +205,10 @@ class MyApp extends StatelessWidget {
             case FreshGraduatedNotification.routeName:
               return MaterialPageRoute(
                 builder: (_) => FreshGraduatedNotification(),
+              );
+            case CaseDisease.routeName:
+              return MaterialPageRoute(
+                builder: (_) => CaseDisease(),
               );
             default:
               return MaterialPageRoute(builder: (_) => const SplashScreen());

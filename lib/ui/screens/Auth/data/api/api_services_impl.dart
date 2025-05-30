@@ -56,7 +56,7 @@ class ApiServicesImpl implements ApiServices {
         'Email': request.email,
         'Password': request.password,
         'FullName': request.fullName,
-        'YearOfExperience': request.yearOfExperience,
+        'YearsOfExperience': request.yearsOfExperience,
         'Department': request.department,
         'ShortBiography': request.biography,
         'Photo': await MultipartFile.fromFile(

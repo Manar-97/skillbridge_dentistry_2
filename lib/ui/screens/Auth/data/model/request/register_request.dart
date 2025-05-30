@@ -7,7 +7,7 @@ class ConsultantRegisterRequest {
   final String email;
   final String password;
   final File resumePath;
-  final String yearOfExperience;
+  final String yearsOfExperience;
   final String department;
   final String biography;
   final File photoPath;
@@ -17,7 +17,7 @@ class ConsultantRegisterRequest {
     required this.email,
     required this.password,
     required this.resumePath,
-    required this.yearOfExperience,
+    required this.yearsOfExperience,
     required this.department,
     required this.biography,
     required this.photoPath,
@@ -29,7 +29,7 @@ class ConsultantRegisterRequest {
       'Email': email,
       'Password': password,
       'ResumeLink': await MultipartFile.fromFile(resumePath.path),
-      'YearOfExperience': yearOfExperience,
+      'YearsOfExperience': yearsOfExperience.toString(),
       'Department': department,
       'ShortBiography': biography,
       'Photo': await MultipartFile.fromFile(photoPath.path),
@@ -41,7 +41,7 @@ class ConsultantRegisterRequest {
       'fullName': fullName,
       'email': email,
       'password': password,
-      'yearOfExperience': yearOfExperience,
+      'yearsOfExperience': yearsOfExperience,
       'department': department,
       'shortBiography': biography,
     };

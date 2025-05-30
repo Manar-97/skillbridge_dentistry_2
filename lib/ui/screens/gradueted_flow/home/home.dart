@@ -5,7 +5,7 @@ import 'package:skillbridge_dentistry/ui/screens/gradueted_flow/camera/camera.da
 import 'package:skillbridge_dentistry/ui/utils/widgets/appButton.dart';
 import '../../../utils/widgets/casecontainer.dart';
 import '../../../utils/widgets/recommendedcontainer.dart';
-import '../camera/case_description/case_description.dart';
+import '../camera/case_description/case_disease.dart';
 import '../fresh_grade_notification/fresh_notification.dart';
 import '../profile/profile_vm.dart';
 
@@ -155,7 +155,7 @@ class _HomeState extends State<Home> {
         CaseContainer(
           icon: Icons.personal_injury_outlined,
           onPressed: () {
-            Navigator.pushNamed(context, CaseDescription.routeName);
+            Navigator.pushNamed(context, CaseDisease.routeName);
           },
           text: 'Diagnose',
         ),
