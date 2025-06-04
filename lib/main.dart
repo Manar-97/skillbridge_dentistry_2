@@ -49,13 +49,10 @@ import 'di/di.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // تهيئة Hive
   await Hive.initFlutter();
 
-  // تسجيل adapter الخاص بالموديل
   Hive.registerAdapter(UploadCaseResponseAdapter());
 
-  // فتح الـ Box (الصندوق) الخاص بالحفظ
   await Hive.openBox<UploadCaseResponse>('upload_case_response');
   await configureDependencies();
   runApp(const MyApp());

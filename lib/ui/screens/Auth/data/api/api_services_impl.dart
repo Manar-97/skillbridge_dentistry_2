@@ -29,12 +29,11 @@ class ApiServicesImpl implements ApiServices {
       );
       final loginResponse = AuthResponse.fromJson(response.data);
 
-      // تخزين بيانات المستخدم كاملة في SharedPreferences
       await SharedPrefHelper.saveUser(loginResponse.user);
       await SharedPrefHelper.setSecureString(
         'token',
         loginResponse.token,
-      ); // يحفظ التوكن الرسمي في التخزين الآمن
+      );
       await SharedPrefHelper.setSecureString('userId', loginResponse.user.id);
       return loginResponse;
     } catch (e) {

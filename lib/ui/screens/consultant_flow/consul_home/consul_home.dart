@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:skillbridge_dentistry/ui/screens/consultant_flow/consultant_notification/notification.dart';
+import 'package:skillbridge_dentistry/ui/utils/appcolors.dart';
 import '../../../utils/widgets/appButton.dart';
 import '../../../utils/widgets/recommendedcontainer.dart';
 import '../../gradueted_flow/profile/profile_vm.dart';
@@ -75,7 +76,7 @@ class _ConsultantHomeState extends State<ConsultantHome> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.25,
+                              height: MediaQuery.of(context).size.height * 0.24,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 gradient: const LinearGradient(
@@ -131,10 +132,10 @@ class _ConsultantHomeState extends State<ConsultantHome> {
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.2,
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
                             Text(
-                              'Departments',
+                              'New Case Requests',
                               style: GoogleFonts.getFont(
                                 'Inter',
                                 fontSize: 22,
@@ -144,20 +145,137 @@ class _ConsultantHomeState extends State<ConsultantHome> {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
-                            buildRecommendedRow(),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            Text(
-                              'Departments',
-                              style: GoogleFonts.getFont(
-                                'Inter',
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColors.barColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/images.jpg',
+                                      width: 120,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.02,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ' Case 1',
+                                          style: GoogleFonts.getFont(
+                                            'Inter',
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'AI Confidence: 64% \n Received 10 minutes ago',
+                                          style: GoogleFonts.getFont(
+                                            'Inter',
+                                            fontSize: 15,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.2,
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColors.barColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/WhatsApp Image 2025-05-30 at 22.41.15_3bb483a6.jpg',
+                                      width: 120,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.02,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          ' Case 2',
+                                          style: GoogleFonts.getFont(
+                                            'Inter',
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'AI Confidence: 64% \n Received 10 minutes ago',
+                                          style: GoogleFonts.getFont(
+                                            'Inter',
+                                            fontSize: 15,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              color: const Color(0xFFE2FFFC), // لون ناعم يتماشى مع الـ gradient
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(Icons.info_outline, color: Color(0xFF5D9F99), size: 28),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        '“Please respond within 24 hours to maintain high ratings.”\n'
+                                            '“Your ratings affect your case assignment priority.”',
+                                        style: GoogleFonts.getFont(
+                                          'Inter',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
                           ],
                         ),
@@ -175,28 +293,28 @@ class _ConsultantHomeState extends State<ConsultantHome> {
     );
   }
 
-  Widget buildRecommendedRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        RecommendedContainer(
-          onPressed: () {},
-          text: 'Periodontology',
-          imageName: 'assets/images/types of categories.png',
-        ),
-        RecommendedContainer(
-          onPressed: () {},
-          text: 'Operative',
-          imageName: 'assets/images/types of categories2.png',
-        ),
-        RecommendedContainer(
-          onPressed: () {},
-          text: 'Endo',
-          imageName: 'assets/images/types of categories3.png',
-        ),
-      ],
-    );
-  }
+  // Widget buildRecommendedRow() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //     children: [
+  //       RecommendedContainer(
+  //         onPressed: () {},
+  //         text: 'Periodontology',
+  //         imageName: 'assets/images/types of categories.png',
+  //       ),
+  //       RecommendedContainer(
+  //         onPressed: () {},
+  //         text: 'Operative',
+  //         imageName: 'assets/images/types of categories2.png',
+  //       ),
+  //       RecommendedContainer(
+  //         onPressed: () {},
+  //         text: 'Endo',
+  //         imageName: 'assets/images/types of categories3.png',
+  //       ),
+  //     ],
+  //   );
+  // }
 
   // Future<void> pickImageFromCamera() async {
   //   final ImagePicker picker = ImagePicker();
