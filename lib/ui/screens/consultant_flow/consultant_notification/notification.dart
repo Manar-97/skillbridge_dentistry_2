@@ -92,9 +92,6 @@ class _ConsultantNotificationsState extends State<ConsultantNotifications> {
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
                     final imageUrl = extractImageUrl(notification.body ?? '');
-
-                    // في داخل ListView.builder في الـ itemBuilder
-
                     return Dismissible(
                       key: Key(notification.notificationId.toString()),
                       direction: DismissDirection.endToStart,
@@ -135,7 +132,7 @@ class _ConsultantNotificationsState extends State<ConsultantNotifications> {
                                     )
                                     : null,
                             title: Text(notification.title ?? "No Title"),
-                            subtitle: Text(notification.body ?? ""),
+                            subtitle: Text(notification.body ?? "No Body"),
                             onTap: () {
                               Navigator.push(
                                 context,

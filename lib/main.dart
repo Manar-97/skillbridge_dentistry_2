@@ -118,7 +118,6 @@ class MyApp extends StatelessWidget {
                   builder: (_) => ResetPassword(email: email, otpCode: otpCode),
                 );
               }
-              // في حال عدم وجود arguments أو كانت غير صحيحة
               return MaterialPageRoute(
                 builder: (_) => const ResetPassword(email: '', otpCode: ''),
               );
@@ -193,8 +192,6 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => const ConsultantNotifications(),
               );
-            // case RatingScreen.routeName:
-            //   return MaterialPageRoute(builder: (_) => const RatingScreen());
             case ConsultantLevelScreen.routeName:
               return MaterialPageRoute(
                 builder: (_) => const ConsultantLevelScreen(),
